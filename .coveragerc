@@ -1,0 +1,12 @@
+[run]
+source = .
+omit =
+    */migrations/*
+    */.venv/*
+    */venv/*
+    */node_modules/*
+    */static/*
+    */media/*
+
+[report]
+skip_covered = True

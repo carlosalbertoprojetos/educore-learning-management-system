@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CursosOnline - plataforma de cursos, aulas e comunidade." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+
+    <title>{% block title %}CursosOnline{% endblock title %}</title>
+</head>
+
+<body>
+    <div class="site">
+        <header class="site-header">
+            <div class="container nav">
+                <a href="{% url 'home' %}" class="brand">
+                    <span class="brand-mark">CO</span>
+                    <span class="brand-text">
+                        <span class="brand-title">CursosOnline</span>
+                        <span class="brand-subtitle">Aprenda, pratique, avance</span>
+                    </span>
+                </a>
+
+                <nav class="nav-links">
+                    <a href="{% url 'contato' %}">Contato</a>
+                    <a href="{% url 'cursos:lista_cursos' %}">Cursos</a>
+                    <a href="{% url 'forum:forum_index' %}">Fórum</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:painel' %}">Painel</a>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <a href="/admin/">Admin</a>
+                    {% endif %}
+                </nav>
+
+                <div class="nav-actions">
+                    {% if user.is_authenticated %}
+                    <span class="chip">Olá, {{ user }}</span>
+                    <a href="{% url 'accounts:logout' %}" class="button ghost">Sair</a>
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}" class="button ghost">Entrar</a>
+                    <a href="{% url 'accounts:cadastrar_usuario' %}" class="button primary">Criar conta</a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
+        {% if messages %}
+        <div class="container">
+            <div class="flash">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <main class="main">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <div class="container footer-grid">
+                <div class="footer-brand">
+                    <span class="brand-mark">CO</span>
+                    <div>
+                        <strong>CursosOnline</strong>
+                        <p>Plataforma educacional para cursos, materiais e comunidade.</p>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <a href="{% url 'cursos:lista_cursos' %}">Explorar cursos</a>
+                    <a href="{% url 'forum:forum_index' %}">Comunidade</a>
+                    <a href="{% url 'contato' %}">Fale conosco</a>
+                </div>
+                <div class="footer-note">
+                    <span>Sistema auxiliar de gestão para cursos a distância.</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>

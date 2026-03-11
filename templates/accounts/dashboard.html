@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% load cursos_tags %}
+
+{% block content %}
+{% listar_meus_cursos user as enrollments %}
+
+<section class="section">
+    <div class="container">
+        <ul class="breadcrumbs">
+            {% block breadcrumb %}
+            <li><a href="{% url 'accounts:painel' %}">Meu painel</a></li>
+            {% endblock %}
+        </ul>
+
+        <div class="dashboard">
+            <aside class="sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Bem-vindo, {{ user }}</strong>
+                    </div>
+                    <ul class="sidebar-list">
+                        {% block menu_options %}
+                        <li class="sidebar-title">Cursos inscritos</li>
+                        {% for enrollment in enrollments %}
+                        <li>
+                            <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}">
+                                <i class="fa fa-book"></i>
+                                {{ enrollment.curso }}
+                            </a>
+                        </li>
+                        {% empty %}
+                        <li class="muted">Sem inscrições no momento.</li>
+                        {% endfor %}
+                        <li class="sidebar-title">Configurações</li>
+                        <li>
+                            <a href="{% url 'accounts:editar_usuario' %}">
+                                <i class="fa fa-cog"></i>
+                                Editar conta
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'accounts:editar_senha' %}">
+                                <i class="fa fa-lock"></i>
+                                Editar senha
+                            </a>
+                        </li>
+                        {% endblock menu_options %}
+                    </ul>
+                </div>
+            </aside>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Meus cursos</h2>
+                    <p class="muted">Acompanhe suas inscrições e acesse os conteúdos.</p>
+                </div>
+                <div class="stack">
+                    {% block dashboard_content %}
+                    {% for enrollment in enrollments %}
+                    <article class="course-card">
+                        <h3>{{ enrollment.curso }}</h3>
+                        <div class="course-meta">
+                            <span class="pill">
+                                Início: {{ enrollment.curso.data_inicial|date:'d/m/Y'|default:'Em breve' }}
+                            </span>
+                        </div>
+                        <p>{{ enrollment.curso.descricao|truncatechars:"200" }}</p>
+                        <div class="form-actions">
+                            <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}" class="button primary">Acessar</a>
+                            <a href="{% url 'cursos:cancelar_enrollment' enrollment.curso.slug %}" class="button danger">Cancelar</a>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="alert">Você ainda não se inscreveu em nenhum curso.</div>
+                    {% endfor %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

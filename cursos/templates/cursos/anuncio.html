@@ -1,0 +1,47 @@
+{% extends "cursos/cursos_dashboard.html" %}
+
+{% block breadcrumb %}
+    {{ block.super }}
+    <li>{{ anuncio }}</li>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="stack">
+    <div class="card">
+        <h2>{{ anuncio }}</h2>
+        {{ anuncio.conteudo|linebreaks }}
+    </div>
+
+    <div class="card" id="comments">
+        <div class="section-header">
+            <h2>Comentários</h2>
+            <p>Participe da conversa sobre o anúncio.</p>
+        </div>
+
+        {% for coment in anuncio.comentarios.all %}
+        <div class="reply-card">
+            <strong>{{ coment.usuario }}</strong>
+            <span class="muted">há {{ coment.criado_em|timesince }}</span>
+            <div>{{ coment.comentario|linebreaksbr }}</div>
+        </div>
+        {% empty %}
+        <div class="alert">Nenhum comentário para este anúncio.</div>
+        {% endfor %}
+
+        <form method="post" action="" class="form" id="add_comment">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button class="button primary">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock dashboard_content %}

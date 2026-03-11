@@ -1,0 +1,40 @@
+{% extends "cursos/cursos_dashboard.html" %}
+
+{% block breadcrumb %}
+    {{ block.super }}
+    <li><a href="{% url 'cursos:aulas' curso.slug %}">Aulas</a></li>
+    <li>{{ aula }}</li>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="card">
+    <h2>{{ aula }}</h2>
+    {{ aula.descricao|linebreaks }}
+
+    <div class="section-header" style="margin-top: 20px;">
+        <h3>Materiais da aula</h3>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for material in aula.material.all %}
+            <tr>
+                <td>{{ material }}</td>
+                <td>
+                    {% if material.is_embutido %}
+                    <a href="{% url 'cursos:material' curso.slug material.pk %}">Acessar</a>
+                    {% else %}
+                    <a target="_blank" href="{{ material.arquivo.url }}">Baixar</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

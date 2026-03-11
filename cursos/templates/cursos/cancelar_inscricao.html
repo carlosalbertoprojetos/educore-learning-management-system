@@ -1,0 +1,15 @@
+{% extends "cursos/cursos_dashboard.html" %}
+
+{% block dashboard_content %}
+<div class="card">
+    <h3>Confirmar cancelamento da inscrição?</h3>
+    <p class="muted">Você pode se inscrever novamente quando quiser.</p>
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="button danger">Confirmar</button>
+            <a href="{% url 'cursos:anuncios' curso.slug %}" class="button light">Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock dashboard_content %}

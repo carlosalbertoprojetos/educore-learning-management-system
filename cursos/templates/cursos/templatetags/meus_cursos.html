@@ -1,0 +1,12 @@
+{% load static %}
+<li class="sidebar-title">Cursos</li>
+{% for enrollment in enrollments %}
+<li>
+    <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}">
+        <i class="fa fa-book"></i>
+        <strong>{{ enrollment.curso }}</strong>
+    </a>
+</li>
+{% empty %}
+<li class="muted">Sem inscrições.</li>
+{% endfor %}

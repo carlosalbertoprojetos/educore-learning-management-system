@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'home' %}">Início</a></li>
+            <li><a href="{% url 'forum:forum_index' %}">Fórum de discussões</a></li>
+            <li>{{ object }}</li>
+        </ul>
+
+        <div class="forum-layout">
+            <aside class="card">
+                <div class="section-header">
+                    <h2>Explorar</h2>
+                </div>
+                <div class="stack">
+                    <a class="button light" href="?order="><i class="fa fa-refresh"></i> Mais recentes</a>
+                    <a class="button light" href="?order=views"><i class="fa fa-eye"></i> Mais visualizados</a>
+                    <a class="button light" href="?order=answers"><i class="fa fa-comments-o"></i> Mais comentados</a>
+                </div>
+                <div class="section-header" style="margin-top: 20px;">
+                    <h3>Tags</h3>
+                </div>
+                <div class="stack">
+                    {% for tag in tags %}
+                    <a href="{% url 'forum:index_tagged' tag.slug %}" class="tag">
+                        <i class="fa fa-tag"></i>
+                        {{ tag }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </aside>
+
+            <div class="stack">
+                <article class="card">
+                    <h2>{{ object }}</h2>
+                    {{ object.body|linebreaks }}
+                    <div class="thread-meta">
+                        <span>Criado por {{ object.author }}</span>
+                        <span>Há {{ object.created|timesince }}</span>
+                    </div>
+                    <div class="thread-meta">
+                        <span><i class="fa fa-tags"></i></span>
+                        {% for tag in object.tags.all %}
+                        <a href="{% url 'forum:index_tagged' tag.slug %}" class="tag">{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+                </article>
+
+                <div class="card" id="div-comments">
+                    <div class="section-header">
+                        <h2 id="comments">Respostas</h2>
+                        <p class="muted"><a href="#add_comment">Responder</a></p>
+                    </div>
+
+                    {% for reply in object.replies.all %}
+                    <div class="reply-card{% if reply.correct %} reply-highlight{% endif %}">
+                        <strong>{{ reply.author }}</strong>
+                        <span class="muted">há {{ reply.created|timesince }}</span>
+                        <div>{{ reply.reply|linebreaksbr }}</div>
+
+                        {% if reply.author == user %}
+                        <div class="form-actions">
+                            <a href="{% url 'forum:reply_incorrect' reply.pk %}" class="button danger reply-cancel-correct-lnk{% if not reply.correct %} hidden{% endif %}">Cancelar resposta</a>
+                            <a href="{% url 'forum:reply_correct' reply.pk %}" class="button success reply-correct-lnk{% if reply.correct %} hidden{% endif %}">Resposta correta</a>
+                            <span class="pill reply-correct-msg{% if not reply.correct %} hidden{% endif %}">Resposta indicada pelo autor</span>
+                        </div>
+                        {% elif reply.correct %}
+                        <span class="pill reply-correct-msg">Resposta indicada pelo autor</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <form method="post" class="form" id="add_comment">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                        {% endfor %}
+                        <div class="form-actions">
+                            <button type="submit" class="button primary">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(".reply-cancel-correct-lnk").on("click", function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $card = $this.closest(".reply-card");
+        $.get($this.attr('href'), function(data) {
+            if (data.success) {
+                $card.find(".reply-correct-msg").addClass('hidden');
+                $this.addClass('hidden');
+                $card.find('.reply-correct-lnk').removeClass('hidden');
+            } else {
+                alert(data.message);
+            }
+        }, "json");
+        return false;
+    });
+    $('.reply-correct-lnk').on('click', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $card = $this.closest(".reply-card");
+        $.get($this.attr('href'), function(data) {
+            if (data.success) {
+                $("#div-comments .reply-correct-msg").addClass('hidden');
+                $("#div-comments .reply-cancel-correct-lnk").addClass('hidden');
+                $("#div-comments .reply-correct-lnk").removeClass('hidden');
+
+                $card.find(".reply-correct-msg").removeClass('hidden');
+                $this.addClass('hidden');
+                $card.find('.reply-cancel-correct-lnk').removeClass('hidden');
+            } else {
+                alert(data.message);
+            }
+        }, 'json');
+        return false;
+    });
+</script>
+{% endblock %}

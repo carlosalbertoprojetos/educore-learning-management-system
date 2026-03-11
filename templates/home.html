@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="hero reveal">
+    <div class="hero-grid">
+        <div>
+            <span class="eyebrow">Plataforma de cursos online</span>
+            <h1>Aprendizado prático, comunidade ativa e evolução constante.</h1>
+            <p>Organize seus estudos com cursos completos, aulas com materiais, anúncios e um fórum onde dúvidas viram discussões ricas.</p>
+            <div class="hero-actions">
+                <a class="button primary" href="{% url 'cursos:lista_cursos' %}">Explorar cursos</a>
+                <a class="button outline" href="{% url 'forum:forum_index' %}">Visitar o fórum</a>
+            </div>
+            <ul class="hero-bullets">
+                <li>Trilhas organizadas por nível e objetivos.</li>
+                <li>Materiais, vídeos e acompanhamento de progresso.</li>
+                <li>Comunidade para troca e apoio contínuo.</li>
+            </ul>
+        </div>
+        <div class="hero-media">
+            <img src="{% static 'img/home.jpg' %}" alt="Estudantes aprendendo online" />
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>O que você encontra por aqui</h2>
+            <p>Uma experiência completa para quem quer aprender, praticar e evoluir com consistência.</p>
+        </div>
+        <div class="grid-3">
+            <article class="card feature-card reveal delay-1">
+                <h3>Catálogo vivo</h3>
+                <p>Cursos atualizados, com aulas liberadas por data e materiais organizados.</p>
+            </article>
+            <article class="card feature-card reveal delay-2">
+                <h3>Comunidade engajada</h3>
+                <p>Fórum com tópicos, respostas e marcação de solução para acelerar o aprendizado.</p>
+            </article>
+            <article class="card feature-card reveal delay-3">
+                <h3>Gestão simples</h3>
+                <p>Painel do aluno com inscrições, anúncios e informações de cada curso.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="card reveal">
+            <div class="section-header">
+                <h2>Comece agora</h2>
+                <p>Crie sua conta, encontre seu próximo curso e participe da comunidade.</p>
+            </div>
+            <div class="hero-actions">
+                <a class="button primary" href="{% url 'accounts:cadastrar_usuario' %}">Criar conta</a>
+                <a class="button ghost" href="{% url 'accounts:login' %}">Já tenho acesso</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

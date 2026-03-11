@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'home' %}">Início</a></li>
+            <li>Fórum de discussões</li>
+        </ul>
+
+        <div class="forum-layout">
+            <aside class="card">
+                <div class="section-header">
+                    <h2>Explorar</h2>
+                    <p>Encontre tópicos por relevância ou tags.</p>
+                </div>
+                <div class="stack">
+                    <a class="button light" href="?order="><i class="fa fa-refresh"></i> Mais recentes</a>
+                    <a class="button light" href="?order=views"><i class="fa fa-eye"></i> Mais visualizados</a>
+                    <a class="button light" href="?order=answers"><i class="fa fa-comments-o"></i> Mais comentados</a>
+                </div>
+                <div class="section-header" style="margin-top: 20px;">
+                    <h3>Tags</h3>
+                </div>
+                <div class="stack">
+                    {% for tag in tags %}
+                    <a href="{% url 'forum:index_tagged' tag.slug %}" class="tag">
+                        <i class="fa fa-tag"></i>
+                        {{ tag }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </aside>
+
+            <div class="stack">
+                {% for thread in object_list %}
+                <article class="card thread-card reveal">
+                    <h3><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></h3>
+                    <div class="thread-meta">
+                        <span>Criado por {{ thread.author }}</span>
+                        <span>{{ thread.answers }} resposta{{ thread.answers|pluralize }}</span>
+                        <span>{{ thread.views }} visualizaç{{ thread.views|pluralize:"ão,ões" }}</span>
+                    </div>
+                    <div class="thread-meta">
+                        <span><i class="fa fa-tags"></i></span>
+                        {% for tag in thread.tags.all %}
+                        <a href="{% url 'forum:index_tagged' tag.slug %}" class="tag">{{ tag }}</a>
+                        {% endfor %}
+                        <span class="pill">Atualizado há {{ thread.modified|timesince }}</span>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="card">
+                    <h3>Nenhum tópico encontrado.</h3>
+                </div>
+                {% endfor %}
+
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">Anterior</a>
+                    </li>
+                    {% endif %}
+                    {% for page in paginator.page_range %}
+                    <li{% if page == page_obj.number %} class="active"{% endif %}>
+                        <a href="?page={{ page }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">{{ page }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">Próxima</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

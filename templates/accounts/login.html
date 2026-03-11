@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+        <div class="card reveal">
+            <span class="eyebrow">Acesso</span>
+            <h1>Entrar</h1>
+            <p class="muted">Use seus dados para acessar o painel.</p>
+
+            <form class="form" method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+                {% endfor %}
+                <div class="form-actions">
+                    <button type="submit" class="button primary">Entrar</button>
+                    <a class="button light" href="{% url 'accounts:cadastrar_usuario' %}">Criar conta</a>
+                </div>
+            </form>
+
+            <div class="stack" style="margin-top: 16px;">
+                <a href="{% url 'accounts:resetar_senha' %}">Esqueceu a senha?</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "cursos/cursos_dashboard.html" %}
+
+{% load static %}
+
+{% block dashboard_content %}
+<div class="stack">
+    {% for anuncio in anuncios %}
+    <article class="card reveal">
+        <h2><a href="{% url 'cursos:anuncio' curso.slug anuncio.pk %}">{{ anuncio }}</a></h2>
+        {{ anuncio.conteudo|linebreaks }}
+        <div class="course-meta">
+            {% with comentario=anuncio.comentarios.count %}
+            {% if comentario > 0 %}
+            <span class="pill"><i class="fa fa-comments-o"></i> {{ comentario }} comentário{{ comentario|pluralize }}</span>
+            {% else %}
+            <span class="pill"><i class="fa fa-comment-o"></i> Nenhum comentário</span>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </article>
+    {% empty %}
+    <div class="card">
+        <h3>Nenhum anúncio criado.</h3>
+    </div>
+    {% endfor %}
+</div>
+{% endblock dashboard_content %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container narrow">
+        <div class="card reveal">
+            <span class="eyebrow">Recuperação</span>
+            <h1>Resetar senha</h1>
+
+            {% if success %}
+            <div class="alert success">
+                Enviamos um email com orientações para criar sua nova senha.
+            </div>
+            {% else %}
+            <p class="muted">Informe o email cadastrado para receber o link de recuperação.</p>
+            <form class="form" method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+                {% endfor %}
+                <div class="form-actions">
+                    <button type="submit" class="button primary">Enviar email</button>
+                    <a class="button ghost" href="{% url 'accounts:login' %}">Voltar ao login</a>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
