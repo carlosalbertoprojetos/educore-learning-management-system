@@ -1,243 +1,136 @@
-# FlaskFullStack
+# EduCore – Learning Management System
 
-O objetivo deste projeto é demonstrar, de forma prática, a construção de uma aplicação web completa utilizando o **framework Flask** no backend e tecnologias modernas no frontend.
-
-O sistema inclui:
-
-* Autenticação de usuários
-* Operações CRUD completas
-* Integração com banco de dados
-* Templates dinâmicos
-* Formulários com validação
-* API RESTful
-* Estrutura preparada para deployment
+Plataforma de cursos online construída com Django, cobrindo catálogo de cursos, aulas, materiais, inscrições, anúncios e fórum da comunidade. O projeto foi pensado para estudos e como base extensível para aplicações educacionais.
 
 ---
 
-# Funcionalidades
-
-## Autenticação de Usuários
-
-* Registro de novos usuários
-* Login seguro
-* Logout de sessão
-* Gerenciamento de sessão utilizando **Flask-Login**
-
-## Operações CRUD
-
-* Criar registros
-* Listar dados
-* Atualizar informações
-* Excluir registros
-
-## Banco de Dados
-
-* Integração com **SQLite**
-* Controle de migrações utilizando **Flask-Migrate**
-
-## Templates Dinâmicos
-
-* Renderização de páginas com **Jinja2**
-* Estrutura modular de templates
-
-## Formulários
-
-* Criação e validação de formulários utilizando **WTForms**
-
-## API RESTful
-
-* Implementação de endpoints REST com **Flask-RESTful**
-* Estrutura preparada para integração com aplicações externas
-
-## Deployment
-
-* Aplicação preparada para implantação em ambientes de produção.
+**Sumário**
+1. Visão geral
+2. Funcionalidades
+3. Stack e dependências
+4. Como rodar localmente
+5. Configurações importantes
+6. Testes
+7. Estrutura do projeto
+8. CI
+9. Licença
 
 ---
 
-# Tecnologias Utilizadas
-
-## Backend
-
-* Python
-* Flask
-* Flask-Login
-* Flask-WTF
-* Flask-Migrate
-* Flask-RESTful
-
-## Frontend
-
-* HTML
-* CSS
-* JavaScript
-* Bootstrap
-
-## Banco de Dados
-
-* SQLite
+**Visão geral**
+O CursosOnline organiza cursos, aulas e materiais, permite que usuários se inscrevam e interajam via anúncios e comentários, e oferece um fórum com tópicos e respostas. A autenticação usa um modelo de usuário customizado.
 
 ---
 
-# Estrutura do Projeto
-
-```
-projeto_flask/
-│
-├── app/
-│   ├── __init__.py
-│   ├── models.py
-│   ├── routes.py
-│   │
-│   ├── templates/
-│   │
-│   └── static/
-│
-├── migrations/
-│
-├── tests/
-│
-├── .gitignore
-├── config.py
-├── manage.py
-├── README.md
-└── requirements.txt
-```
-
-Descrição dos principais diretórios:
-
-* **app/** → núcleo da aplicação Flask
-* **models.py** → definição dos modelos do banco de dados
-* **routes.py** → definição das rotas da aplicação
-* **templates/** → arquivos HTML renderizados pelo Jinja2
-* **static/** → arquivos estáticos (CSS, JS, imagens)
-* **migrations/** → histórico de migrações do banco
-* **tests/** → testes automatizados da aplicação
+**Funcionalidades**
+- Catálogo de cursos com busca por nome e descrição
+- Aulas com disponibilidade por data
+- Materiais por aula (vídeo embutido e/ou arquivo)
+- Inscrições com status (pendente, aprovado, cancelado, recusado)
+- Anúncios de curso com comentários
+- Disparo de email para alunos inscritos ao criar anúncio
+- Fórum com tópicos, respostas, tags e marcação de resposta correta
+- Autenticação completa com usuário customizado e reset de senha
+- Painel administrativo do Django
 
 ---
 
-# Instalação
+**Stack e dependências**
+- Python 3.8+ (compatível com Django 4.1)
+- Django 4.1.2
+- SQLite (padrão de desenvolvimento)
+- django-taggit (tags no fórum)
+- Pillow (upload de imagens)
 
-Siga os passos abaixo para configurar o ambiente de desenvolvimento.
+Todas as dependências estão em `requirements.txt`.
 
-## 1. Clonar o repositório
+---
 
+**Como rodar localmente**
+1. Clonar o repositório
 ```bash
-git clone https://github.com/seu_usuario/projeto_flask.git
-cd projeto_flask
+git clone <URL_DO_REPOSITORIO>
+cd Cursos_Online
 ```
 
----
-
-## 2. Criar ambiente virtual
-
+2. Criar e ativar o ambiente virtual
 ```bash
-python3 -m venv venv
-```
-
----
-
-## 3. Ativar ambiente virtual
-
-Linux / Mac:
-
-```bash
-source venv/bin/activate
+python -m venv .venv
 ```
 
 Windows:
-
 ```bash
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
----
+Linux/Mac:
+```bash
+source .venv/bin/activate
+```
 
-## 4. Instalar dependências
-
+3. Instalar dependências
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-# Configuração do Banco de Dados
-
-Inicializar migrações:
-
+4. Aplicar migrações
 ```bash
-flask db init
+python manage.py migrate
 ```
 
-Criar migração inicial:
-
+5. (Opcional) Criar superusuário
 ```bash
-flask db migrate -m "Initial migration"
+python manage.py createsuperuser
 ```
 
-Aplicar migrações:
-
+6. Iniciar servidor
 ```bash
-flask db upgrade
+python manage.py runserver
 ```
+
+A aplicação fica disponível em `http://127.0.0.1:8000`.
 
 ---
 
-# Executar a Aplicação
+**Configurações importantes**
+Arquivo: `cursos_online/settings.py`
+- `DEBUG`: deixe `True` apenas em desenvolvimento
+- `ALLOWED_HOSTS`: configure para produção
+- `SECRET_KEY`: substitua em produção
+- `EMAIL_BACKEND`: por padrão usa backend de console
+- `MEDIA_ROOT` e `STATIC_ROOT`: diretórios de arquivos enviados e estáticos
 
-```bash
-flask run
-```
-
-A aplicação estará disponível em:
-
-```
-http://127.0.0.1:5000
-```
+Para envio real de emails, configure SMTP e troque o `EMAIL_BACKEND`.
 
 ---
 
-# Testes
-
-Caso existam testes implementados no diretório **tests**, eles podem ser executados com:
-
+**Testes**
 ```bash
-pytest
+python manage.py test
 ```
 
 ---
 
-# Contribuições
-
-Contribuições são bem-vindas.
-
-Se desejar colaborar:
-
-1. Faça um **fork do projeto**
-2. Crie uma **branch para sua feature**
-
+**Estrutura do projeto**
 ```
-git checkout -b feature/minha-feature
+cursos_online/
+accounts/
+cursos/
+forum/
+templates/
+static/
+media/
+manage.py
+requirements.txt
 ```
-
-3. Faça o commit das alterações
-
-```
-git commit -m "Adiciona nova funcionalidade"
-```
-
-4. Envie para seu fork
-
-```
-git push origin feature/minha-feature
-```
-
-5. Abra um **Pull Request**
 
 ---
 
-# Licença
+**CI**
+O repositório inclui pipeline em `azure-pipelines.yml` com execução de testes Django e análise via SonarCloud.
 
-Este projeto está licenciado sob a **Licença MIT**.
-Consulte o arquivo **LICENSE** para mais informações.
+---
+
+**Licença**
+Este projeto ainda não possui licença definida.
 
