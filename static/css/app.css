@@ -659,7 +659,7 @@ ul.errorlist {
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     padding: 14px;
-    background: var(--footer-bg);
+    background: var(--surface-glass);
 }
 
 .reply-highlight {
