@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 
@@ -19,19 +20,19 @@ class CursosManager(models.Manager):
 
 
 class Cursos(models.Model):
-    nome = models.CharField('Nome', max_length=100)
-    slug = models.SlugField('Atalho')
-    descricao = models.TextField('Descrição Simples', blank=True)
-    sobre = models.TextField('Sobre o Curso', blank=True)
+    nome = models.CharField(_('Nome'), max_length=100)
+    slug = models.SlugField(_('Atalho'))
+    descricao = models.TextField(_('Descrição Simples'), blank=True)
+    sobre = models.TextField(_('Sobre o Curso'), blank=True)
     data_inicial = models.DateField(
-        'Data de início', null=True, blank=True,
+        _('Data de início'), null=True, blank=True,
     )
     imagem = models.ImageField(
-        upload_to='cursos/imagens', verbose_name='Imagem',
+        upload_to='cursos/imagens', verbose_name=_('Imagem'),
         null=True, blank=True
     )
-    criado_em = models.DateTimeField('Criado em', auto_now_add=True)
-    atualizado_em = models.DateTimeField('Atualizado em ', auto_now_add=True)
+    criado_em = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    atualizado_em = models.DateTimeField(_('Atualizado em'), auto_now_add=True)
 
     objects = CursosManager()
 
@@ -46,21 +47,21 @@ class Cursos(models.Model):
         return self.aula.filter(inicio__lte=hoje)
 
     class Meta:
-        verbose_name = 'Curso'
-        verbose_name_plural = 'Cursos'
+        verbose_name = _('Curso')
+        verbose_name_plural = _('Cursos')
         ordering = ['nome']  # ['-name'] ordem decrescente
 
 
 class Aulas(models.Model):
     curso = models.ForeignKey(
-        Cursos, verbose_name='Curso', related_name='aula', on_delete=models.DO_NOTHING)
-    nome = models.CharField('Nome', max_length=100)
-    descricao = models.TextField('Descrição', blank=True)
-    numero = models.IntegerField('Número (ordem)', blank=True, default=0)
-    inicio = models.DateField('Disponível em', blank=True, null=True)
+        Cursos, verbose_name=_('Curso'), related_name='aula', on_delete=models.DO_NOTHING)
+    nome = models.CharField(_('Nome'), max_length=100)
+    descricao = models.TextField(_('Descrição'), blank=True)
+    numero = models.IntegerField(_('Número (ordem)'), blank=True, default=0)
+    inicio = models.DateField(_('Disponível em'), blank=True, null=True)
 
-    criado_em = models.DateTimeField('Criado em', auto_now_add=True)
-    atualizado_em = models.DateTimeField('Atualizado em', auto_now_add=True)
+    criado_em = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    atualizado_em = models.DateTimeField(_('Atualizado em'), auto_now_add=True)
 
     def __str__(self):
         return self.nome
@@ -73,21 +74,21 @@ class Aulas(models.Model):
         return False
 
     class Meta:
-        verbose_name = 'Aula'
-        verbose_name_plural = 'Aulas'
+        verbose_name = _('Aula')
+        verbose_name_plural = _('Aulas')
         ordering = ['-numero']
 
 
 class Materiais(models.Model):
     aula = models.ForeignKey(
-        Aulas, verbose_name='Aulas', related_name='material', on_delete=models.DO_NOTHING)
-    nome = models.CharField('Nome', max_length=100)
-    embutido = models.TextField('Vídeo da aula', blank=True)
+        Aulas, verbose_name=_('Aulas'), related_name='material', on_delete=models.DO_NOTHING)
+    nome = models.CharField(_('Nome'), max_length=100)
+    embutido = models.TextField(_('Vídeo da aula'), blank=True)
     arquivo = models.FileField(
         upload_to='aulas/materiais', blank=True, null=True)
 
-    criado_em = models.DateTimeField('Criado em', auto_now_add=True)
-    atualizado_em = models.DateTimeField('Atualizado em', auto_now_add=True)
+    criado_em = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    atualizado_em = models.DateTimeField(_('Atualizado em'), auto_now_add=True)
 
     def is_embutido(self):
         return bool(self.embutido)
@@ -96,42 +97,42 @@ class Materiais(models.Model):
         return self.nome
 
     class Meta:
-        verbose_name = 'Material'
-        verbose_name_plural = 'Materiais'
+        verbose_name = _('Material')
+        verbose_name_plural = _('Materiais')
 
 
 class Enrollment(models.Model):
 
     STATUS_CHOICES = (
-        (0, 'Pendente'),
-        (1, 'Aprovado'),
-        (2, 'Cancelado'),
-        (3, 'Recusado'),
+        (0, _('Pendente')),
+        (1, _('Aprovado')),
+        (2, _('Cancelado')),
+        (3, _('Recusado')),
     )
 
     usuario = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='Usuário',
+        verbose_name=_('Usuário'),
         related_name='enrollments',
         on_delete=models.DO_NOTHING
     )
     curso = models.ForeignKey(
-        Cursos, verbose_name='Curso',
+        Cursos, verbose_name=_('Curso'),
         related_name='enrollments',
         on_delete=models.DO_NOTHING
     )
-    status = models.ImageField(
-        'Situação',
+    status = models.IntegerField(
+        _('Situação'),
         choices=STATUS_CHOICES,
         default=0,
         blank=True
     )
-    criado_em = models.DateTimeField('Criado em', auto_now_add=True)
-    atualizado_em = models.DateTimeField('Atualizado em ', auto_now_add=True)
+    criado_em = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    atualizado_em = models.DateTimeField(_('Atualizado em'), auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Inscrição'
-        verbose_name_plural = 'Inscrições'
+        verbose_name = _('Inscrição')
+        verbose_name_plural = _('Inscrições')
         """ 
         unique_together/unicidade - combina a unicidade entre cursos e usuário,
         ou seja, cada usuário se increve apenas uma vez para cada curso.
@@ -139,11 +140,11 @@ class Enrollment(models.Model):
         unique_together = (('usuario', 'curso'),)
 
     def ativo(self):
-        self.status = '1'
+        self.status = 1
         self.save()
 
     def aprovado(self):
-        return self.status == '1'
+        return self.status == 1
 
     def __str__(self):
         return self.usuario
@@ -152,43 +153,43 @@ class Enrollment(models.Model):
 class Anuncios(models.Model):
     curso = models.ForeignKey(
         Cursos,
-        verbose_name='Curso',
+        verbose_name=_('Curso'),
         related_name='anuncios',
         on_delete=models.DO_NOTHING
     )
-    titulo = models.CharField('Título', max_length=100)
-    conteudo = models.TextField('Conteúdo', blank=True)
+    titulo = models.CharField(_('Título'), max_length=100)
+    conteudo = models.TextField(_('Conteúdo'), blank=True)
 
-    criado_em = models.DateTimeField('Criado em', auto_now_add=True)
-    atualizado_em = models.DateTimeField('Atualizado em', auto_now_add=True)
+    criado_em = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    atualizado_em = models.DateTimeField(_('Atualizado em'), auto_now_add=True)
 
     def __str__(self):
         return self.titulo
 
     class Meta:
-        verbose_name = 'Anúncio'
-        verbose_name_plural = 'Anúncios'
+        verbose_name = _('Anúncio')
+        verbose_name_plural = _('Anúncios')
         ordering = ['-criado_em']
 
 
 class Comentarios(models.Model):
     anuncio = models.ForeignKey(
-        Anuncios, verbose_name='Anúncio', related_name='comentarios',
+        Anuncios, verbose_name=_('Anúncio'), related_name='comentarios',
         on_delete=models.DO_NOTHING
     )
     usuario = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='Usuário',
+        verbose_name=_('Usuário'),
         on_delete=models.DO_NOTHING
     )
-    comentario = models.TextField('Comentário', blank=True)
+    comentario = models.TextField(_('Comentário'), blank=True)
 
-    criado_em = models.DateTimeField('Criado em', auto_now_add=True)
-    atualizado_em = models.DateTimeField('Atualizado em', auto_now_add=True)
+    criado_em = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    atualizado_em = models.DateTimeField(_('Atualizado em'), auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Comentário'
-        verbose_name_plural = 'Comentários'
+        verbose_name = _('Comentário')
+        verbose_name_plural = _('Comentários')
         ordering = ['-criado_em']
 
     def __str__(self):

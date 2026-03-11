@@ -1,15 +1,16 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
-{% load cursos_tags %}
+{% load i18n cursos_tags %}
 
 {% block content %}
 {% listar_meus_cursos user as enrollments %}
+{% trans "Em breve" as soon_label %}
 
 <section class="section">
     <div class="container">
         <ul class="breadcrumbs">
             {% block breadcrumb %}
-            <li><a href="{% url 'accounts:painel' %}">Meu painel</a></li>
+            <li><a href="{% url 'accounts:painel' %}">{% trans "Meu painel" %}</a></li>
             {% endblock %}
         </ul>
 
@@ -17,11 +18,11 @@
             <aside class="sidebar">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Bem-vindo, {{ user }}</strong>
+                        <strong>{% trans "Bem-vindo," %} {{ user }}</strong>
                     </div>
                     <ul class="sidebar-list">
                         {% block menu_options %}
-                        <li class="sidebar-title">Cursos inscritos</li>
+                        <li class="sidebar-title">{% trans "Cursos inscritos" %}</li>
                         {% for enrollment in enrollments %}
                         <li>
                             <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}">
@@ -30,19 +31,19 @@
                             </a>
                         </li>
                         {% empty %}
-                        <li class="muted">Sem inscrições no momento.</li>
+                        <li class="muted">{% trans "Sem inscrições no momento." %}</li>
                         {% endfor %}
-                        <li class="sidebar-title">Configurações</li>
+                        <li class="sidebar-title">{% trans "Configurações" %}</li>
                         <li>
                             <a href="{% url 'accounts:editar_usuario' %}">
                                 <i class="fa fa-cog"></i>
-                                Editar conta
+                                {% trans "Editar conta" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'accounts:editar_senha' %}">
                                 <i class="fa fa-lock"></i>
-                                Editar senha
+                                {% trans "Editar senha" %}
                             </a>
                         </li>
                         {% endblock menu_options %}
@@ -52,8 +53,8 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h2>Meus cursos</h2>
-                    <p class="muted">Acompanhe suas inscrições e acesse os conteúdos.</p>
+                    <h2>{% trans "Meus cursos" %}</h2>
+                    <p class="muted">{% trans "Acompanhe suas inscrições e acesse os conteúdos." %}</p>
                 </div>
                 <div class="stack">
                     {% block dashboard_content %}
@@ -62,17 +63,17 @@
                         <h3>{{ enrollment.curso }}</h3>
                         <div class="course-meta">
                             <span class="pill">
-                                Início: {{ enrollment.curso.data_inicial|date:'d/m/Y'|default:'Em breve' }}
+                                {% trans "Início:" %} {{ enrollment.curso.data_inicial|date:'d/m/Y'|default:soon_label }}
                             </span>
                         </div>
                         <p>{{ enrollment.curso.descricao|truncatechars:"200" }}</p>
                         <div class="form-actions">
-                            <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}" class="button primary">Acessar</a>
-                            <a href="{% url 'cursos:cancelar_enrollment' enrollment.curso.slug %}" class="button danger">Cancelar</a>
+                            <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}" class="button primary">{% trans "Acessar" %}</a>
+                            <a href="{% url 'cursos:cancelar_enrollment' enrollment.curso.slug %}" class="button danger">{% trans "Cancelar" %}</a>
                         </div>
                     </article>
                     {% empty %}
-                    <div class="alert">Você ainda não se inscreveu em nenhum curso.</div>
+                    <div class="alert">{% trans "Você ainda não se inscreveu em nenhum curso." %}</div>
                     {% endfor %}
                     {% endblock %}
                 </div>

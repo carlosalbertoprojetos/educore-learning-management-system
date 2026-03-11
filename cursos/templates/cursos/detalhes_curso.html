@@ -1,18 +1,18 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 
 <section class="hero reveal">
     <div class="hero-grid">
         <div>
-            <span class="eyebrow">Curso</span>
+            <span class="eyebrow">{% trans "Curso" %}</span>
             <h1>{{ curso }}</h1>
             <p>{{ curso.descricao }}</p>
             <div class="hero-actions">
-                <a href="{% url 'cursos:enrollment' curso.slug %}" class="button primary">Inscrever-se</a>
-                <a href="{% url 'contato' %}" class="button outline">Fale conosco</a>
+                <a href="{% url 'cursos:enrollment' curso.slug %}" class="button primary">{% trans "Inscrever-se" %}</a>
+                <a href="{% url 'contato' %}" class="button outline">{% trans "Fale conosco" %}</a>
             </div>
         </div>
         <div class="hero-media">
@@ -29,19 +29,19 @@
     <div class="container grid-2">
         <div class="card reveal delay-1">
             <div class="section-header">
-                <h2>Sobre o curso</h2>
-                <p>Detalhes e objetivos principais.</p>
+                <h2>{% trans "Sobre o curso" %}</h2>
+                <p>{% trans "Detalhes e objetivos principais." %}</p>
             </div>
             {{ curso.sobre|linebreaks }}
         </div>
 
         <div class="card reveal delay-2" id="contato">
             <div class="section-header">
-                <h2>Tire suas dúvidas</h2>
-                <p>Envie sua pergunta e nossa equipe responde.</p>
+                <h2>{% trans "Tire suas dúvidas" %}</h2>
+                <p>{% trans "Envie sua pergunta e nossa equipe responde." %}</p>
             </div>
             {% if is_valid %}
-            <div class="alert success">Mensagem enviada com sucesso.</div>
+            <div class="alert success">{% trans "Mensagem enviada com sucesso." %}</div>
             {% endif %}
             <form class="form" method="POST" action="">
                 {% csrf_token %}
@@ -54,7 +54,7 @@
                 </div>
                 {% endfor %}
                 <div class="form-actions">
-                    <button type="submit" class="button primary">Enviar</button>
+                    <button type="submit" class="button primary">{% trans "Enviar" %}</button>
                 </div>
             </form>
         </div>

@@ -1,6 +1,6 @@
-{% extends "accounts/dashboard.html" %}
+﻿{% extends "accounts/dashboard.html" %}
 
-{% load static %}
+{% load static i18n %}
 
 {% block breadcrumb %}
     {{ block.super }}
@@ -12,19 +12,19 @@
 <li>
     <a href="{% url 'cursos:aulas' curso.slug %}">
         <i class="fa fa-video-camera"></i>
-        Aulas e materiais
+        {% trans "Aulas e materiais" %}
     </a>
 </li>
 <li>
     <a href="{% url 'cursos:anuncios' curso.slug %}">
         <i class="fa fa-bullhorn"></i>
-        Anúncios
+        {% trans "Anúncios" %}
     </a>
 </li>
 <li>
     <a href="{% url 'forum:forum_index' %}">
         <i class="fa fa-comments-o"></i>
-        Fórum de dúvidas
+        {% trans "Fórum de dúvidas" %}
     </a>
 </li>
 {{ block.super }}

@@ -1,17 +1,18 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
 <section class="section">
     <div class="container narrow">
         <div class="card reveal">
-            <span class="eyebrow">Contato do curso</span>
-            <h1>Tire suas dúvidas</h1>
-            <p class="muted">Envie uma mensagem e nossa equipe retorna em breve.</p>
+            <span class="eyebrow">{% trans "Contato do curso" %}</span>
+            <h1>{% trans "Tire suas dúvidas" %}</h1>
+            <p class="muted">{% trans "Envie uma mensagem e nossa equipe retorna em breve." %}</p>
 
             {% if fail %}
-            <div class="alert error">Erro ao enviar sua mensagem de email.</div>
+            <div class="alert error">{% trans "Erro ao enviar sua mensagem de email." %}</div>
             {% elif success %}
-            <div class="alert success">Email enviado com sucesso.</div>
+            <div class="alert success">{% trans "Email enviado com sucesso." %}</div>
             {% endif %}
 
             <form method="POST" action="{% url 'contato' %}" class="form">
@@ -25,7 +26,7 @@
                 </div>
                 {% endfor %}
                 <div class="form-actions">
-                    <button type="submit" class="button primary">Enviar</button>
+                    <button type="submit" class="button primary">{% trans "Enviar" %}</button>
                 </div>
             </form>
         </div>

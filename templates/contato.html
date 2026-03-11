@@ -1,23 +1,24 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Contato{% endblock title %}
+{% block title %}{% trans "Contato" %}{% endblock title %}
 
 {% block content %}
 
 <section class="section">
     <div class="container narrow">
         <div class="card reveal">
-            <span class="eyebrow">Contato</span>
-            <h1>Fale com a equipe</h1>
-            <p class="muted">Se precisar de ajuda, sugestões ou parcerias, escolha o melhor canal abaixo.</p>
+            <span class="eyebrow">{% trans "Contato" %}</span>
+            <h1>{% trans "Fale com a equipe" %}</h1>
+            <p class="muted">{% trans "Se precisar de ajuda, sugestões ou parcerias, escolha o melhor canal abaixo." %}</p>
 
             <div class="stack">
                 <div class="card card-compact">
-                    <strong>Email</strong>
+                    <strong>{% trans "Email" %}</strong>
                     <p><a href="mailto:cursos_online@cursos_online.com">cursos_online@cursos_online.com</a></p>
                 </div>
                 <div class="card card-compact">
-                    <strong>Redes sociais</strong>
+                    <strong>{% trans "Redes sociais" %}</strong>
                     <div class="stack">
                         <a href="https://facebook.com/" target="_blank" rel="noreferrer">Facebook: Cursos_OnFace</a>
                         <a href="https://instagram.com/" target="_blank" rel="noreferrer">Instagram: Cursos_OnInsta</a>

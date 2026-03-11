@@ -3,7 +3,10 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import (TemplateView, View, ListView, DetailView)
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from django.http import HttpResponse
+
+from ai.services.radar import log_event
 
 from .models import Thread, Reply
 from .forms import ReplyForm
@@ -35,6 +38,8 @@ class ForumView(ListView):
         tag = self.kwargs.get('tag', '')
         if tag:
             queryset = queryset.filter(tags__slug__icontains=tag)
+        if self.request.user.is_authenticated:
+            log_event(self.request, 'view_forum')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -53,6 +58,12 @@ class ThreadView(DetailView):
         if not self.request.user.is_authenticated or (self.object.author != self.request.user):
             self.object.views = self.object.views + 1
             self.object.save()
+        if self.request.user.is_authenticated:
+            log_event(
+                self.request,
+                'view_thread',
+                metadata={'thread_id': self.object.pk, 'slug': self.object.slug},
+            )
         return response  
 
     # acrescentou 'tags' ao contexto
@@ -66,7 +77,7 @@ class ThreadView(DetailView):
         # verifica se está logado para inclusão de resposta
         if not self.request.user.is_authenticated:
             messages.success(
-                self.request, 'Precisa estar logado para responder ao tópico.')
+                self.request, _('Precisa estar logado para responder ao tópico.'))
             return redirect(self.request.path)
         
         self.object = self.get_object()
@@ -78,8 +89,14 @@ class ThreadView(DetailView):
             reply.author = self.request.user
             reply.save()
             messages.success(
-                self.request, 'A sua responsta foi enviada com sucesso'
+                self.request, _('A sua resposta foi enviada com sucesso')
             )
+            if self.request.user.is_authenticated:
+                log_event(
+                    self.request,
+                    'post_reply',
+                    metadata={'thread_id': self.object.pk},
+                )
             context['form'] = ReplyForm()
         return self.render_to_response(context)
 
@@ -92,7 +109,7 @@ class ReplyCorrectView(View):
         reply = get_object_or_404(Reply, pk=pk, thread__author=request.user)
         reply.correct = self.correct
         reply.save()
-        message = 'Resposta atualizada com sucesso'
+        message = _('Resposta atualizada com sucesso')
         is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
         if is_ajax:
             data = {'success': True, 'message': message}
@@ -105,3 +122,4 @@ forum = ForumView.as_view()
 thread = ThreadView.as_view()
 reply_correct = ReplyCorrectView.as_view()
 reply_incorrect = ReplyCorrectView.as_view(correct=False)
+

@@ -1,8 +1,9 @@
-{% extends "cursos/cursos_dashboard.html" %}
+﻿{% extends "cursos/cursos_dashboard.html" %}
+{% load i18n %}
 
 {% block breadcrumb %}
     {{ block.super }}
-    <li>Aulas</li>
+    <li>{% trans "Aulas" %}</li>
 {% endblock %}
 
 {% block dashboard_content %}
@@ -12,12 +13,12 @@
         <h2><a href="{% url 'cursos:aula' curso.slug aula.pk %}">{{ aula }}</a></h2>
         <p>{{ aula.descricao|truncatewords:'20' }}</p>
         <div class="form-actions">
-            <a href="{% url 'cursos:aula' curso.slug aula.pk %}" class="button primary">Acessar aula</a>
+            <a href="{% url 'cursos:aula' curso.slug aula.pk %}" class="button primary">{% trans "Acessar aula" %}</a>
         </div>
     </article>
     {% empty %}
     <div class="card">
-        <h3>Nenhuma aula disponível.</h3>
+        <h3>{% trans "Nenhuma aula disponível." %}</h3>
     </div>
     {% endfor %}
 </div>

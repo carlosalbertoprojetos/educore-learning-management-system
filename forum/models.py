@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
 from taggit.managers import TaggableManager
 
@@ -8,24 +9,24 @@ from taggit.managers import TaggableManager
 
 class Thread(models.Model):
     
-    title = models.CharField('Título', max_length=100)
-    slug = models.SlugField('Identificador', max_length=100, unique=True)
-    body =models.TextField('Mensagem')
+    title = models.CharField(_('Título'), max_length=100)
+    slug = models.SlugField(_('Identificador'), max_length=100, unique=True)
+    body = models.TextField(_('Mensagem'))
     author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Autor', related_name='threads'
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Autor'), related_name='threads'
     )
-    views = models.IntegerField('Visualizações', blank=True, default=0)
-    answers = models.IntegerField('Respostas', blank=True, default=0)
+    views = models.IntegerField(_('Visualizações'), blank=True, default=0)
+    answers = models.IntegerField(_('Respostas'), blank=True, default=0)
     
     tags = TaggableManager()
     
-    created = models.DateTimeField('Criado em', auto_now_add=True)
-    modified = models.DateTimeField('Modificado em', auto_now=True)
+    created = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    modified = models.DateTimeField(_('Modificado em'), auto_now=True)
    
     
     class Meta:
-        verbose_name = 'Tópico'
-        verbose_name_plural = 'Tópicos'
+        verbose_name = _('Tópico')
+        verbose_name_plural = _('Tópicos')
         ordering = ['-modified']
         
     def __str__(self):
@@ -37,23 +38,23 @@ class Thread(models.Model):
 class Reply(models.Model):
     
     thread = models.ForeignKey(
-        Thread, on_delete=models.CASCADE, verbose_name='Tópico', related_name='replies'
+        Thread, on_delete=models.CASCADE, verbose_name=_('Tópico'), related_name='replies'
         )
-    reply =models.TextField('Rresposta')
+    reply = models.TextField(_('Resposta'))
     author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Autor', related_name='replies'
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Autor'), related_name='replies'
     )
-    correct = models.BooleanField('Correta?', blank=True, default=False)
+    correct = models.BooleanField(_('Correta?'), blank=True, default=False)
     
-    created = models.DateTimeField('Criado em', auto_now_add=True)
-    modified = models.DateTimeField('Modificado em', auto_now=True)
+    created = models.DateTimeField(_('Criado em'), auto_now_add=True)
+    modified = models.DateTimeField(_('Modificado em'), auto_now=True)
  
     def __str__(self):
         return self.reply[:100]
  
     class Meta:
-        verbose_name = 'Resposta'
-        verbose_name_plural = 'Respostas'
+        verbose_name = _('Resposta')
+        verbose_name_plural = _('Respostas')
         ordering = ['-correct', 'created']
 
 

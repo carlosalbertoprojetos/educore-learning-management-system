@@ -1,8 +1,9 @@
-{% extends "cursos/cursos_dashboard.html" %}
+﻿{% extends "cursos/cursos_dashboard.html" %}
+{% load i18n %}
 
 {% block breadcrumb %}
     {{ block.super }}
-    <li><a href="{% url 'cursos:aulas' curso.slug %}">Aulas</a></li>
+    <li><a href="{% url 'cursos:aulas' curso.slug %}">{% trans "Aulas" %}</a></li>
     <li>{{ aula }}</li>
 {% endblock %}
 
@@ -12,13 +13,13 @@
     {{ aula.descricao|linebreaks }}
 
     <div class="section-header" style="margin-top: 20px;">
-        <h3>Materiais da aula</h3>
+        <h3>{% trans "Materiais da aula" %}</h3>
     </div>
     <table class="table">
         <thead>
             <tr>
-                <th>Nome</th>
-                <th>Ação</th>
+                <th>{% trans "Nome" %}</th>
+                <th>{% trans "Ação" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -27,9 +28,9 @@
                 <td>{{ material }}</td>
                 <td>
                     {% if material.is_embutido %}
-                    <a href="{% url 'cursos:material' curso.slug material.pk %}">Acessar</a>
+                    <a href="{% url 'cursos:material' curso.slug material.pk %}">{% trans "Acessar" %}</a>
                     {% else %}
-                    <a target="_blank" href="{{ material.arquivo.url }}">Baixar</a>
+                    <a target="_blank" href="{{ material.arquivo.url }}">{% trans "Baixar" %}</a>
                     {% endif %}
                 </td>
             </tr>

@@ -1,6 +1,6 @@
-{% extends "cursos/cursos_dashboard.html" %}
+﻿{% extends "cursos/cursos_dashboard.html" %}
 
-{% load static %}
+{% load static i18n %}
 
 {% block dashboard_content %}
 <div class="stack">
@@ -11,16 +11,19 @@
         <div class="course-meta">
             {% with comentario=anuncio.comentarios.count %}
             {% if comentario > 0 %}
-            <span class="pill"><i class="fa fa-comments-o"></i> {{ comentario }} comentário{{ comentario|pluralize }}</span>
+            <span class="pill">
+                <i class="fa fa-comments-o"></i>
+                {% blocktrans count total=comentario %}{{ total }} comentário{% plural %}{{ total }} comentários{% endblocktrans %}
+            </span>
             {% else %}
-            <span class="pill"><i class="fa fa-comment-o"></i> Nenhum comentário</span>
+            <span class="pill"><i class="fa fa-comment-o"></i> {% trans "Nenhum comentário" %}</span>
             {% endif %}
             {% endwith %}
         </div>
     </article>
     {% empty %}
     <div class="card">
-        <h3>Nenhum anúncio criado.</h3>
+        <h3>{% trans "Nenhum anúncio criado." %}</h3>
     </div>
     {% endfor %}
 </div>

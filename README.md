@@ -1,15 +1,16 @@
-# EduCore - Learning Management System
+﻿# EduCore – Learning Management System
 
-Plataforma de cursos online construída com Django, com catálogo de cursos, aulas, materiais, inscrições, anúncios e fórum da comunidade. O projeto foi pensado para estudos e como base extensível para aplicações educacionais.
+Plataforma de cursos online construída com Django, unindo catálogo de cursos, aulas, materiais, inscrições, anúncios e fórum da comunidade. Agora inclui a Suite IA (Mentor + Atlas, Radar e Studio) para elevar a experiência de aprendizagem e a autoria de conteúdo.
 
 ---
 
 **Sumário**
 - Visão geral
-- Funcionalidades
+- Recursos principais
+- Suite IA
 - Stack e dependências
 - Como rodar localmente
-- Configurações importantes
+- Variáveis de ambiente
 - Testes
 - Estrutura do projeto
 - CI
@@ -25,11 +26,15 @@ Rotas principais:
 - `/cursos/`: catálogo de cursos
 - `/conta/`: autenticação e painel do usuário
 - `/forum/`: fórum da comunidade
+- `/ai/`: Mentor IA
+- `/ai/radar/`: Radar (staff)
+- `/ai/studio/`: Studio (staff)
+- `/ai/atlas/`: Atlas (staff)
 - `/admin/`: painel administrativo do Django
 
 ---
 
-**Funcionalidades**
+**Recursos principais**
 - Catálogo de cursos com listagem por título e descrição
 - Aulas com disponibilidade por data e controle de acesso por inscrição
 - Materiais por aula (vídeo embutido e/ou arquivo para download)
@@ -43,13 +48,26 @@ Rotas principais:
 
 ---
 
+**Suite IA**
+- **Mentor + Atlas**: tutor IA com recuperação contextual (RAG). Respostas usam o índice Atlas para conectar cursos, aulas, materiais e discussões do fórum.
+- **Radar**: sinais de risco com base em eventos reais (queda de engajamento) e revisão humana.
+- **Studio**: autoria inteligente para quizzes, rubricas e comunicados, com rascunhos revisáveis.
+
+Comandos úteis:
+```bash
+python manage.py rebuild_atlas
+```
+
+---
+
 **Stack e dependências**
 - Python 3.8+ (compatível com Django 4.1.2)
 - Django 4.1.2
 - SQLite (padrão de desenvolvimento)
 - django-taggit (tags no fórum)
 - Pillow (upload de imagens)
-- Front-end: Bootstrap, Font Awesome e jQuery (assets em `static/`)
+- Front-end: Font Awesome e jQuery (assets em `static/`)
+- Integração IA: OpenAI API via requests HTTP (sem SDK)
 
 Todas as dependências estão em `requirements.txt`.
 
@@ -101,7 +119,7 @@ A aplicação fica disponível em `http://127.0.0.1:8000`.
 
 ---
 
-**Configurações importantes**
+**Variáveis de ambiente**
 Arquivo: `cursos_online/settings.py`
 - `DEBUG`: deixe `True` apenas em desenvolvimento
 - `ALLOWED_HOSTS`: configure para produção
@@ -109,6 +127,12 @@ Arquivo: `cursos_online/settings.py`
 - `EMAIL_BACKEND`: por padrão usa backend de console
 - `DEFAULT_FROM_EMAIL` e `CONTACT_EMAIL`: remetente e destino do contato
 - `MEDIA_ROOT` e `STATIC_ROOT`: diretórios de arquivos enviados e estáticos
+
+Configurações OpenAI:
+- `OPENAI_API_KEY`: chave da API
+- `OPENAI_DEFAULT_MODEL`: modelo de resposta (default: `gpt-4.1`)
+- `OPENAI_EMBEDDING_MODEL`: modelo de embedding (default: `text-embedding-3-small`)
+- `OPENAI_TIMEOUT`: timeout em segundos (default: `30`)
 
 Para envio real de emails, configure SMTP e troque o `EMAIL_BACKEND`.
 
@@ -132,7 +156,7 @@ coverage html
 
 **Estrutura do projeto**
 ```
-cursos_online/
+ai/
 accounts/
 cursos/
 forum/

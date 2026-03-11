@@ -1,0 +1,55 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Mentor IA" %} | {{ thread.title }}{% endblock %}
+
+{% block content %}
+{% trans "Todos os cursos" as all_courses %}
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">{% trans "Mentor IA" %}</span>
+                <h2>{{ thread.title }}</h2>
+                <p>{% trans "Curso foco:" %} {{ thread.course|default:all_courses }} · {% trans "Atlas ativo:" %} {{ atlas_count }} {% trans "fontes" %}</p>
+            </div>
+            <a class="button ghost" href="{% url 'ai:mentor_home' %}">{% trans "Voltar" %}</a>
+        </div>
+        <div class="ai-stream">
+            {% for msg in thread_messages %}
+            <div class="ai-message role-{{ msg.role }}">
+                <div class="ai-badge">{{ msg.role|capfirst }}</div>
+                <div class="ai-content">
+                    <p>{{ msg.content|linebreaksbr }}</p>
+                    {% if msg.citations %}
+                    <div class="ai-citations">
+                        <span>{% trans "Fontes Atlas:" %}</span>
+                        <div class="chips">
+                            {% for cite in msg.citations %}
+                            {% if cite.url %}
+                            <a href="{{ cite.url }}" class="chip">{{ cite.title }}</a>
+                            {% else %}
+                            <span class="chip">{{ cite.title }}</span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty">{% trans "Nenhuma mensagem ainda." %}</div>
+            {% endfor %}
+        </div>
+        <div class="card ai-input">
+            <form method="post" class="stack">
+                {% csrf_token %}
+                <label>{% trans "Sua próxima pergunta" %}</label>
+                {{ form.message }}
+                <button class="button primary" type="submit">{% trans "Enviar" %}</button>
+                <p class="hint">{% trans "As respostas são geradas por IA e precisam de revisão humana." %}</p>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

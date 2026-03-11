@@ -1,4 +1,4 @@
-# Python Django
+﻿# Python Django
 # Test a Django project on multiple versions of Python.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
@@ -53,6 +53,16 @@ steps:
     pip install -r requirements.txt
     pip install unittest-xml-reporting
   displayName: 'Install prerequisites'
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y gettext
+  displayName: 'Install gettext'
+
+- script: |
+    pushd '$(projectRoot)'
+    python manage.py makemessages -l en -i node_modules -i .venv -i media -i static
+    python manage.py compilemessages
+  displayName: 'Update translations'
 
 - script: |
     pushd '$(projectRoot)'

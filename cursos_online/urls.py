@@ -1,4 +1,4 @@
-"""cursos_online URL Configuration
+﻿"""cursos_online URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -29,8 +29,11 @@ urlpatterns = [
     # apps
     path('cursos/', include('cursos.urls', namespace='cursos')),
     path('conta/', include('accounts.urls', namespace='accounts')),
-    
+    path('i18n/', include('django.conf.urls.i18n')),
+
     path('forum/', include('forum.urls', namespace='forum')),
+
+    path('ai/', include('ai.urls', namespace='ai')),
 
     # admin django
     path('admin/', admin.site.urls),
@@ -42,3 +45,6 @@ from django.conf.urls.static import static
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+

@@ -1,6 +1,6 @@
-﻿asgiref==3.5.2
-Django==4.1.2
-django-taggit==3.0.0
-Pillow==10.2.0
-sqlparse==0.4.3
-tzdata==2022.4
+asgiref==3.11.1
+Django==6.0.3
+django-taggit==6.1.0
+Pillow==12.1.1
+sqlparse==0.5.5
+tzdata==2025.3

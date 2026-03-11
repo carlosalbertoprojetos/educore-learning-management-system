@@ -1,15 +1,16 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 <section class="section">
     <div class="container narrow">
         <div class="card reveal">
-            <span class="eyebrow">Nova senha</span>
-            <h1>Defina sua nova senha</h1>
+            <span class="eyebrow">{% trans "Nova senha" %}</span>
+            <h1>{% trans "Defina sua nova senha" %}</h1>
 
             {% if success %}
             <div class="alert success">
-                Sua senha foi criada com sucesso.
+                {% trans "Sua senha foi criada com sucesso." %}
             </div>
             {% else %}
             <form class="form" method="post">
@@ -23,8 +24,8 @@
                 </div>
                 {% endfor %}
                 <div class="form-actions">
-                    <button type="submit" class="button primary">Salvar senha</button>
-                    <a class="button ghost" href="{% url 'accounts:login' %}">Voltar ao login</a>
+                    <button type="submit" class="button primary">{% trans "Salvar senha" %}</button>
+                    <a class="button ghost" href="{% url 'accounts:login' %}">{% trans "Voltar ao login" %}</a>
                 </div>
             </form>
             {% endif %}

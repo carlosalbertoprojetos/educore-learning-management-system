@@ -1,14 +1,15 @@
-{% extends "cursos/cursos_dashboard.html" %}
+﻿{% extends "cursos/cursos_dashboard.html" %}
+{% load i18n %}
 
 {% block dashboard_content %}
 <div class="card">
-    <h3>Confirmar cancelamento da inscrição?</h3>
-    <p class="muted">Você pode se inscrever novamente quando quiser.</p>
+    <h3>{% trans "Confirmar cancelamento da inscrição?" %}</h3>
+    <p class="muted">{% trans "Você pode se inscrever novamente quando quiser." %}</p>
     <form action="" method="post" class="form">
         {% csrf_token %}
         <div class="form-actions">
-            <button type="submit" class="button danger">Confirmar</button>
-            <a href="{% url 'cursos:anuncios' curso.slug %}" class="button light">Voltar</a>
+            <button type="submit" class="button danger">{% trans "Confirmar" %}</button>
+            <a href="{% url 'cursos:anuncios' curso.slug %}" class="button light">{% trans "Voltar" %}</a>
         </div>
     </form>
 </div>

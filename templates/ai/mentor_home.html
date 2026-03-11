@@ -1,0 +1,55 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Mentor IA" %} | CursosOnline{% endblock %}
+
+{% block content %}
+{% trans "Todos os cursos" as all_courses %}
+<section class="hero ai-hero">
+    <div class="container hero-grid">
+        <div>
+            <span class="eyebrow">{% trans "Mentor + Atlas" %}</span>
+            <h1>{% trans "Mentor IA para aprendizado com profundidade" %}</h1>
+            <p class="lead">{% trans "Converse com um tutor que conecta aulas, materiais e comunidade. Cada resposta nasce do Atlas: o índice inteligente da sua plataforma." %}</p>
+            <div class="hero-badges">
+                <span class="chip">{% trans "Atlas ativo:" %} {{ atlas_count }} {% trans "fontes" %}</span>
+                <span class="chip">{% trans "Modo: estudo guiado" %}</span>
+            </div>
+        </div>
+        <div class="hero-card">
+            <h3>{% trans "Inicie uma sessão" %}</h3>
+            <form method="post" class="stack">
+                {% csrf_token %}
+                <label>{% trans "Título da sessão" %}</label>
+                {{ form.title }}
+                <label>{% trans "Curso foco (opcional)" %}</label>
+                {{ form.course }}
+                <label>{% trans "Sua pergunta" %}</label>
+                {{ form.message }}
+                <button class="button primary" type="submit">{% trans "Abrir mentor" %}</button>
+            </form>
+            <p class="hint">{% trans "Dica: descreva seu objetivo e onde está travando." %}</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <h2>{% trans "Sessões recentes" %}</h2>
+            <p>{% trans "Continue de onde parou ou refine seu foco." %}</p>
+        </div>
+        <div class="grid cards">
+            {% for thread in threads %}
+            <a class="card" href="{% url 'ai:mentor_thread' thread.pk %}">
+                <h3>{{ thread.title }}</h3>
+                <p>{{ thread.course|default:all_courses }}</p>
+                <span class="meta">{% trans "Atualizado em" %} {{ thread.updated_at|date:"d/m/Y H:i" }}</span>
+            </a>
+            {% empty %}
+            <div class="empty">{% trans "Nenhuma sessão ainda. Crie sua primeira conversa acima." %}</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

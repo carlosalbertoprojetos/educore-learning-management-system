@@ -1,0 +1,76 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Studio" %} | CursosOnline{% endblock %}
+
+{% block content %}
+{% trans "Geral" as general_label %}
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">{% trans "Studio" %}</span>
+                <h2>{% trans "Autoria inteligente" %}</h2>
+                <p>{% trans "Gere rascunhos de quiz, rubricas e comunicados com padrão editorial consistente." %}</p>
+            </div>
+        </div>
+        <div class="grid split">
+            <div class="card">
+                <h3>{% trans "Novo rascunho" %}</h3>
+                <form method="post" class="stack">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="generate" />
+                    <label>{% trans "Curso" %}</label>
+                    {{ form.course }}
+                    <label>{% trans "Tipo" %}</label>
+                    {{ form.draft_type }}
+                    <label>{% trans "Título" %}</label>
+                    {{ form.title }}
+                    <label>{% trans "Público" %}</label>
+                    {{ form.audience }}
+                    <label>{% trans "Objetivos" %}</label>
+                    {{ form.goals }}
+                    <label>{% trans "Restrições" %}</label>
+                    {{ form.constraints }}
+                    <label>{% trans "Tom" %}</label>
+                    {{ form.tone }}
+                    <label>{% trans "Material base" %}</label>
+                    {{ form.source_material }}
+                    <button class="button primary" type="submit">{% trans "Gerar rascunho" %}</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>{% trans "Rascunhos recentes" %}</h3>
+                <div class="stack">
+                    {% for draft in drafts %}
+                    <div class="draft-card">
+                        <div class="card-head">
+                            <h4>{{ draft.title }}</h4>
+                            <span class="chip">{{ draft.draft_type }}</span>
+                        </div>
+                        <p>{% trans "Curso:" %} {{ draft.course|default:general_label }} · {% trans "Status:" %} {{ draft.status }}</p>
+                        <div class="draft-output">{{ draft.output|linebreaksbr }}</div>
+                        <div class="draft-actions">
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="approve" />
+                                <input type="hidden" name="draft_id" value="{{ draft.id }}" />
+                                <button class="button ghost" type="submit">{% trans "Aprovar" %}</button>
+                            </form>
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="archive" />
+                                <input type="hidden" name="draft_id" value="{{ draft.id }}" />
+                                <button class="button ghost" type="submit">{% trans "Arquivar" %}</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty">{% trans "Nenhum rascunho criado ainda." %}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,12 +1,13 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 <section class="section">
     <div class="container narrow">
         <div class="card reveal">
-            <span class="eyebrow">Cadastro</span>
-            <h1>Crie sua conta</h1>
-            <p class="muted">Leva menos de um minuto e libera o acesso ao conteúdo.</p>
+            <span class="eyebrow">{% trans "Cadastro" %}</span>
+            <h1>{% trans "Crie sua conta" %}</h1>
+            <p class="muted">{% trans "Leva menos de um minuto e libera o acesso ao conteúdo." %}</p>
 
             <form class="form" method="post">
                 {% csrf_token %}
@@ -19,8 +20,8 @@
                 </div>
                 {% endfor %}
                 <div class="form-actions">
-                    <button type="submit" class="button primary">Cadastrar</button>
-                    <a class="button ghost" href="{% url 'accounts:login' %}">Já tenho conta</a>
+                    <button type="submit" class="button primary">{% trans "Cadastrar" %}</button>
+                    <a class="button ghost" href="{% url 'accounts:login' %}">{% trans "Já tenho conta" %}</a>
                 </div>
             </form>
         </div>

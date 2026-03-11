@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 # from django.contrib.auth.forms import UserCreationForm
 
 from .models import ResetarSenha
@@ -10,9 +11,9 @@ from .mail import send_email_template
 User = get_user_model()
 
 class CadastrarUsuarioForm(forms.ModelForm):
-    password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
+    password1 = forms.CharField(label=_('Senha'), widget=forms.PasswordInput)
     password2 = forms.CharField(
-        label='Confirmação de Senha', widget=forms.PasswordInput
+        label=_('Confirmação de Senha'), widget=forms.PasswordInput
     )
     
     class Meta:
@@ -24,7 +25,7 @@ class CadastrarUsuarioForm(forms.ModelForm):
         password2 = self.cleaned_data['password2']
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError(
-                'As senhas não são iguais',
+                _('As senhas não são iguais'),
             )
         return password2
     
@@ -37,7 +38,7 @@ class CadastrarUsuarioForm(forms.ModelForm):
     
 
 class ResetarSenhaForm(forms.Form):
-    email = forms.EmailField(label='email')    
+    email = forms.EmailField(label=_('E-mail'))
 
     def clean_email(self):
         """ 
@@ -47,7 +48,7 @@ class ResetarSenhaForm(forms.Form):
         if User.objects.filter(email=email).exists():
             return email
         raise forms.ValidationError(
-            'Nenhum usuário encontrado com este email.'
+            _('Nenhum usuário encontrado com este email.')
         )
         
     def save(self, commit=True):
@@ -56,7 +57,7 @@ class ResetarSenhaForm(forms.Form):
         reset = ResetarSenha(key=key, user=user)
         reset.save()
         template_name = 'accounts/resetar_senha_email.html'
-        subject = 'Criar nova senha.'
+        subject = _('Criar nova senha')
         context = {
             'reset': reset,
         }

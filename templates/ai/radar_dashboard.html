@@ -1,0 +1,48 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Radar" %} | CursosOnline{% endblock %}
+
+{% block content %}
+{% trans "Geral" as general_label %}
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">{% trans "Radar" %}</span>
+                <h2>{% trans "Alertas de aprendizagem" %}</h2>
+                <p>{% trans "Identifique queda de engajamento com base em eventos reais e confirme com revisão humana." %}</p>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="analyze" />
+                <button class="button primary" type="submit">{% trans "Rodar análise" %}</button>
+            </form>
+        </div>
+        <div class="grid cards">
+            {% for signal in signals %}
+            <div class="card">
+                <div class="card-head">
+                    <h3>{{ signal.user }}</h3>
+                    <span class="chip">{{ signal.label }}</span>
+                </div>
+                <p>{% trans "Curso:" %} {{ signal.course|default:general_label }}</p>
+                <p>{% trans "Score:" %} {{ signal.score }}</p>
+                {% if signal.evidence %}
+                <p>{% trans "Eventos recentes:" %} {{ signal.evidence.recent }} | {% trans "período anterior:" %} {{ signal.evidence.previous }}</p>
+                {% endif %}
+                <p>{% trans "Status:" %} {{ signal.status }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="review" />
+                    <input type="hidden" name="signal_id" value="{{ signal.id }}" />
+                    <button class="button ghost" type="submit">{% trans "Marcar revisado" %}</button>
+                </form>
+            </div>
+            {% empty %}
+            <div class="empty">{% trans "Nenhum sinal aberto no momento." %}</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

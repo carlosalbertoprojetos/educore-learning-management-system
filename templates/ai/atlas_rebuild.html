@@ -1,0 +1,25 @@
+﻿{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Atlas" %} | CursosOnline{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">{% trans "Atlas" %}</span>
+                <h2>{% trans "Índice de conhecimento" %}</h2>
+                <p>{% trans "Reconstrua o Atlas para manter respostas alinhadas com cursos, aulas e fórum." %}</p>
+            </div>
+        </div>
+        <div class="card">
+            <p>{% trans "Total de fontes ativas:" %} <strong>{{ atlas_count }}</strong></p>
+            <form method="post">
+                {% csrf_token %}
+                <button class="button primary" type="submit">{% trans "Reconstruir Atlas" %}</button>
+            </form>
+            <p class="hint">{% trans "Este processo pode levar alguns minutos se houver muitos materiais." %}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

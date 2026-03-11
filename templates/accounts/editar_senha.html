@@ -1,15 +1,16 @@
-{% extends "accounts/dashboard.html" %}
+﻿{% extends "accounts/dashboard.html" %}
+{% load i18n %}
 
 {% block breadcrumb %}
     {{ block.super }}
-    <li>Editar senha</li>
+    <li>{% trans "Editar senha" %}</li>
 {% endblock %}
 
 {% block dashboard_content %}
 <form class="form" method="POST">
     {% csrf_token %}
     {% if success %}
-    <div class="alert success">Senha alterada com sucesso.</div>
+    <div class="alert success">{% trans "Senha alterada com sucesso." %}</div>
     {% endif %}
     {{ form.non_field_errors }}
     {% for field in form %}
@@ -20,7 +21,7 @@
     </div>
     {% endfor %}
     <div class="form-actions">
-        <button type="submit" class="button primary">Alterar senha</button>
+        <button type="submit" class="button primary">{% trans "Alterar senha" %}</button>
     </div>
 </form>
 {% endblock %}

@@ -1,7 +1,10 @@
-﻿from django.contrib import messages
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
+
+from ai.services.radar import log_event
 
 from .forms import ComentariosForm, FormContatoCurso
 from .models import Anuncios, Cursos, Enrollment, Aulas, Materiais
@@ -30,6 +33,8 @@ def lista_cursos_view(request):
 
 def detalhes_curso_view(request, slug):
     curso = get_object_or_404(Cursos, slug=slug)
+    if request.user.is_authenticated:
+        log_event(request, 'view_course', course=curso, metadata={'slug': curso.slug})
     context = {}
     if request.method == 'POST':
         form = FormContatoCurso(request.POST, request.FILES)
@@ -54,8 +59,8 @@ def contato_curso_view(request):
         email = request.POST.get('email', '')
         mensagem = request.POST.get('mensagem', '')
         email = EmailMessage(
-            "Mensagem de Cursos Online",
-            "De {} <{}> Escreveu: \n\n{}".format(nome, email, mensagem),
+            _("Mensagem de Cursos Online"),
+            _("De {} <{}> escreveu:\n\n{}").format(nome, email, mensagem),
             "nao-responder@inbox.mailtrap.io",
             ["cursos_online@cursos_online.com"],
             reply_to=[email]
@@ -73,7 +78,7 @@ def contato_curso_view(request):
     return render(request, 'cursos/contato_curso.html', context)
 
 
-# faz inscriÃ§Ã£o
+# faz inscrição
 @login_required
 def enrollment(request, slug):
     curso = get_object_or_404(Cursos, slug=slug)
@@ -83,13 +88,13 @@ def enrollment(request, slug):
     )
     if created:
         enrollment.ativo()
-        messages.success(request, 'InscriÃ§Ã£o realizada com sucesso!!!')
+        messages.success(request, _('Inscrição realizada com sucesso!!!'))
     else:
-        messages.info(request, 'UsuÃ¡rio jÃ¡ inscrito neste curso.')
+        messages.info(request, _('Usuário já inscrito neste curso.'))
     return redirect('accounts:painel')
 
 
-# cancelar inscriÃ§Ã£o
+# cancelar inscrição
 @login_required
 def cancelar_enrollment(request, slug):
     curso = get_object_or_404(Cursos, slug=slug)
@@ -100,7 +105,7 @@ def cancelar_enrollment(request, slug):
     )
     if request.method == 'POST':
         enrollment.delete()
-        messages.success(request, 'InscriÃ§Ã£o cancelada com sucesso!!!')
+        messages.success(request, _('Inscrição cancelada com sucesso!!!'))
         return redirect('accounts:painel')
     template_name = 'cursos/cancelar_inscricao.html'
     context = {
@@ -114,18 +119,8 @@ def cancelar_enrollment(request, slug):
 @inscricao_required
 def anuncios(request, slug):
     curso = request.curso
-    # toda essa parte foi substituÃ­da pelo decorator @inscricao_required
-    # tudo isso abaixo foi bustituÃ­do por @inscricao_required
-    # curso = get_object_or_404(Cursos, slug=slug)
-    # if not request.user.is_staff:
-    #     enrollment = get_object_or_404(
-    #         Enrollment,
-    #         usuario=request.user,
-    #         curso=curso
-    #     )
-    #     if not enrollment.aprovado():
-    #         messages.error(request, 'A sua inscriÃ§Ã£o estÃ¡ pendente')
-    #         return redirect('accounts:painel')
+    if request.user.is_authenticated:
+        log_event(request, 'view_announcements', course=curso)
     template_name = 'cursos/anuncios.html' 
     context = {
         'curso': curso,
@@ -138,16 +133,8 @@ def anuncios(request, slug):
 @inscricao_required
 def painel_anuncio(request, slug, pk):
     curso = request.curso
-    # curso = get_object_or_404(Cursos, slug=slug)
-    # if not request.user.is_staff:
-    #     enrollment = get_object_or_404(
-    #         Enrollment,
-    #         usuario=request.user,
-    #         curso=curso
-    #     )
-    #     if not enrollment.aprovado():
-    #         messages.error(request, 'A sua inscriÃ§Ã£o estÃ¡ pendente')
-    #         return redirect('accounts:painel')
+    if request.user.is_authenticated:
+        log_event(request, 'view_announcements', course=curso)
     anuncio = get_object_or_404(curso.anuncios.all(), pk=pk)
     form = ComentariosForm(request.POST or None)
     if form.is_valid():
@@ -156,7 +143,7 @@ def painel_anuncio(request, slug, pk):
         comentario.anuncio = anuncio
         comentario.save()
         form = ComentariosForm()
-        messages.success(request, 'Seu comentÃ¡rio foi salvo com sucesso!!!')
+        messages.success(request, _('Seu comentário foi salvo com sucesso!!!'))
 
     template_name = 'cursos/anuncio.html'
     context = {
@@ -171,6 +158,8 @@ def painel_anuncio(request, slug, pk):
 @inscricao_required
 def aulas(request, slug):
     curso = request.curso
+    if request.user.is_authenticated:
+        log_event(request, 'view_course', course=curso)
     aulas = curso.aulas_disponiveis()
     if not request.user.is_staff:
         aulas = curso.aula.all()
@@ -188,8 +177,15 @@ def aula(request, slug, pk):
     curso = request.curso
     aula = get_object_or_404(Aulas, pk=pk, curso=curso)
     if not request.user.is_staff or not aula.is_disponivel():
-        messages.error(request, 'Esta aula nÃ£o estÃ¡ disponÃ­vel')
+        messages.error(request, _('Esta aula não está disponível'))
         return redirect('cursos:aulas', slug=curso.slug)
+    if request.user.is_authenticated:
+        log_event(
+            request,
+            'view_lesson',
+            course=curso,
+            metadata={'aula_id': aula.pk, 'aula_nome': aula.nome},
+        )
     template_name = 'cursos/aula.html'
     context = {
         'curso': curso,
@@ -205,8 +201,15 @@ def material(request, slug, pk):
     aula = get_object_or_404(Aulas, pk=pk, curso=curso)
     material = get_object_or_404(Materiais, pk=pk, aula__curso=curso)
     if not request.user.is_staff or not aula.is_disponivel():
-        messages.error(request, 'Este material nÃ£o estÃ¡ disponÃ­vel para download.')
+        messages.error(request, _('Este material não está disponível para download.'))
         return redirect('cursos:aula', slug=curso.slug, pk=aula.pk)
+    if request.user.is_authenticated:
+        log_event(
+            request,
+            'view_material',
+            course=curso,
+            metadata={'material_id': material.pk, 'material_nome': material.nome},
+        )
     if not material.is_embutido():
         return redirect(material.arquivo.url)
     template_name = 'cursos/material.html'
@@ -216,5 +219,4 @@ def material(request, slug, pk):
         'material': material
     }
     return render(request, template_name, context)
-
 

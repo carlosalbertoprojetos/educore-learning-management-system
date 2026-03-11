@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <section class="section">
     <div class="container">
         <div class="section-header">
-            <h1>Lista de cursos</h1>
-            <p>Encontre o curso ideal para o seu momento de aprendizado.</p>
+            <h1>{% trans "Lista de cursos" %}</h1>
+            <p>{% trans "Encontre o curso ideal para o seu momento de aprendizado." %}</p>
         </div>
 
         <div class="grid-3">
@@ -25,12 +25,12 @@
                 <h3><a href="{{ curso.get_absolute_url }}">{{ curso.nome }}</a></h3>
                 <p>{{ curso.descricao|truncatechars:"200" }}</p>
                 <div class="form-actions">
-                    <a class="button primary" href="{{ curso.get_absolute_url }}">Ver detalhes</a>
+                    <a class="button primary" href="{{ curso.get_absolute_url }}">{% trans "Ver detalhes" %}</a>
                 </div>
             </article>
             {% empty %}
             <div class="card">
-                <h3>Sem cursos disponíveis no momento.</h3>
+                <h3>{% trans "Sem cursos disponíveis no momento." %}</h3>
             </div>
             {% endfor %}
         </div>

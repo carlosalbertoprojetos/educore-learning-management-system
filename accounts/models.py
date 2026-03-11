@@ -3,26 +3,27 @@ from django.db import models
 from django.core import validators
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
-        "Usuario",
+        _("Usuário"),
         max_length=30,
         unique=True,
         validators=[
             validators.RegexValidator(
                 re.compile(r"^[\w.@+-]+$"),
-                "O nome de usuario so pode conter letras, digitos ou os seguintes caracteres: @/./+/-/_",
-                "Usuario invalido ou ja existente!",
+                _("O nome de usuário só pode conter letras, dígitos ou os seguintes caracteres: @/./+/-/_"),
+                _("Usuário inválido ou já existente!"),
             )
         ],
     )
-    email = models.EmailField("E-mail", unique=True)
-    name = models.CharField("Nome", max_length=100, blank=True)
-    is_active = models.BooleanField("Esta ativo?", blank=True, default=True)
-    is_staff = models.BooleanField("E da equipe?", blank=True, default=False)
-    date_joined = models.DateTimeField("Data de Entrada", auto_now_add=True)
+    email = models.EmailField(_("E-mail"), unique=True)
+    name = models.CharField(_("Nome"), max_length=100, blank=True)
+    is_active = models.BooleanField(_("Está ativo?"), blank=True, default=True)
+    is_staff = models.BooleanField(_("É da equipe?"), blank=True, default=False)
+    date_joined = models.DateTimeField(_("Data de Entrada"), auto_now_add=True)
 
     objects = UserManager()
 
@@ -30,8 +31,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["email"]
 
     class Meta:
-        verbose_name = "Usuario"
-        verbose_name_plural = "Usuarios"
+        verbose_name = _("Usuário")
+        verbose_name_plural = _("Usuários")
 
     def __str__(self):
         return self.name or self.username
@@ -46,17 +47,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 class ResetarSenha(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name="Usuario",
+        verbose_name=_("Usuário"),
         on_delete=models.CASCADE,
         related_name="resets",
     )
-    key = models.CharField("Chave", max_length=100, unique=True)
-    created_at = models.DateTimeField("Criado em", auto_now_add=True)
-    confirmed = models.BooleanField("Confirmado?", default=False, blank=True)
+    key = models.CharField(_("Chave"), max_length=100, unique=True)
+    created_at = models.DateTimeField(_("Criado em"), auto_now_add=True)
+    confirmed = models.BooleanField(_("Confirmado?"), default=False, blank=True)
 
     class Meta:
-        verbose_name = "Nova Senha"
-        verbose_name_plural = "Novas Senhas"
+        verbose_name = _("Nova Senha")
+        verbose_name_plural = _("Novas Senhas")
         ordering = ["-created_at"]
 
     def __str__(self):

@@ -1,26 +1,27 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 <section class="section">
     <div class="container">
         <ul class="breadcrumbs">
-            <li><a href="{% url 'home' %}">Início</a></li>
-            <li>Fórum de discussões</li>
+            <li><a href="{% url 'home' %}">{% trans "Início" %}</a></li>
+            <li>{% trans "Fórum de discussões" %}</li>
         </ul>
 
         <div class="forum-layout">
             <aside class="card">
                 <div class="section-header">
-                    <h2>Explorar</h2>
-                    <p>Encontre tópicos por relevância ou tags.</p>
+                    <h2>{% trans "Explorar" %}</h2>
+                    <p>{% trans "Encontre tópicos por relevância ou tags." %}</p>
                 </div>
                 <div class="stack">
-                    <a class="button light" href="?order="><i class="fa fa-refresh"></i> Mais recentes</a>
-                    <a class="button light" href="?order=views"><i class="fa fa-eye"></i> Mais visualizados</a>
-                    <a class="button light" href="?order=answers"><i class="fa fa-comments-o"></i> Mais comentados</a>
+                    <a class="button light" href="?order="><i class="fa fa-refresh"></i> {% trans "Mais recentes" %}</a>
+                    <a class="button light" href="?order=views"><i class="fa fa-eye"></i> {% trans "Mais visualizados" %}</a>
+                    <a class="button light" href="?order=answers"><i class="fa fa-comments-o"></i> {% trans "Mais comentados" %}</a>
                 </div>
                 <div class="section-header" style="margin-top: 20px;">
-                    <h3>Tags</h3>
+                    <h3>{% trans "Tags" %}</h3>
                 </div>
                 <div class="stack">
                     {% for tag in tags %}
@@ -37,28 +38,32 @@
                 <article class="card thread-card reveal">
                     <h3><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></h3>
                     <div class="thread-meta">
-                        <span>Criado por {{ thread.author }}</span>
-                        <span>{{ thread.answers }} resposta{{ thread.answers|pluralize }}</span>
-                        <span>{{ thread.views }} visualizaç{{ thread.views|pluralize:"ão,ões" }}</span>
+                        <span>{% trans "Criado por" %} {{ thread.author }}</span>
+                        <span>
+                            {% blocktrans count total=thread.answers %}{{ total }} resposta{% plural %}{{ total }} respostas{% endblocktrans %}
+                        </span>
+                        <span>
+                            {% blocktrans count total=thread.views %}{{ total }} visualização{% plural %}{{ total }} visualizações{% endblocktrans %}
+                        </span>
                     </div>
                     <div class="thread-meta">
                         <span><i class="fa fa-tags"></i></span>
                         {% for tag in thread.tags.all %}
                         <a href="{% url 'forum:index_tagged' tag.slug %}" class="tag">{{ tag }}</a>
                         {% endfor %}
-                        <span class="pill">Atualizado há {{ thread.modified|timesince }}</span>
+                        <span class="pill">{% blocktrans with time=thread.modified|timesince %}Atualizado há {{ time }}{% endblocktrans %}</span>
                     </div>
                 </article>
                 {% empty %}
                 <div class="card">
-                    <h3>Nenhum tópico encontrado.</h3>
+                    <h3>{% trans "Nenhum tópico encontrado." %}</h3>
                 </div>
                 {% endfor %}
 
                 <ul class="pagination">
                     {% if page_obj.has_previous %}
                     <li>
-                        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">Anterior</a>
+                        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">{% trans "Anterior" %}</a>
                     </li>
                     {% endif %}
                     {% for page in paginator.page_range %}
@@ -68,7 +73,7 @@
                     {% endfor %}
                     {% if page_obj.has_next %}
                     <li>
-                        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">Próxima</a>
+                        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}">{% trans "Próxima" %}</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -77,3 +82,4 @@
     </div>
 </section>
 {% endblock %}
+

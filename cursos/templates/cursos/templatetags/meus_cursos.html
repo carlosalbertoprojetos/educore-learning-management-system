@@ -1,5 +1,5 @@
-{% load static %}
-<li class="sidebar-title">Cursos</li>
+﻿{% load static i18n %}
+<li class="sidebar-title">{% trans "Cursos" %}</li>
 {% for enrollment in enrollments %}
 <li>
     <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}">
@@ -8,5 +8,5 @@
     </a>
 </li>
 {% empty %}
-<li class="muted">Sem inscrições.</li>
+<li class="muted">{% trans "Sem inscrições." %}</li>
 {% endfor %}
