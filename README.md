@@ -1,14 +1,4 @@
-# Full-Stack Web Development with Flask
-
-Aplicação **Full-Stack Web** desenvolvida com **Flask**, demonstrando a implementação completa de funcionalidades comuns em sistemas web modernos.
-
-Este projeto foi desenvolvido como parte do estudo de **desenvolvimento web full-stack**, abordando desde a configuração do ambiente até a criação de APIs, autenticação de usuários e integração com banco de dados.
-
-O repositório serve como **base educacional e referência para projetos Flask**, apresentando uma arquitetura simples, organizada e extensível.
-
----
-
-# Visão Geral
+# FlaskFullStack
 
 O objetivo deste projeto é demonstrar, de forma prática, a construção de uma aplicação web completa utilizando o **framework Flask** no backend e tecnologias modernas no frontend.
 
