@@ -1,17 +1,25 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, get_language
 
 from taggit.managers import TaggableManager
+
+
+def _use_en():
+    lang = get_language() or ""
+    return lang.lower().startswith("en")
+
 
 
 
 class Thread(models.Model):
     
     title = models.CharField(_('Título'), max_length=100)
+    title_en = models.CharField(_('Título (EN)'), max_length=100, blank=True)
     slug = models.SlugField(_('Identificador'), max_length=100, unique=True)
     body = models.TextField(_('Mensagem'))
+    body_en = models.TextField(_('Mensagem (EN)'), blank=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Autor'), related_name='threads'
     )
@@ -29,8 +37,20 @@ class Thread(models.Model):
         verbose_name_plural = _('Tópicos')
         ordering = ['-modified']
         
-    def __str__(self):
+    @property
+    def display_title(self):
+        if _use_en() and self.title_en:
+            return self.title_en
         return self.title
+
+    @property
+    def display_body(self):
+        if _use_en() and self.body_en:
+            return self.body_en
+        return self.body
+
+    def __str__(self):
+        return self.display_title
 
     def get_absolute_url(self):
         return reverse('forum:thread', args=[self.slug])
@@ -41,6 +61,7 @@ class Reply(models.Model):
         Thread, on_delete=models.CASCADE, verbose_name=_('Tópico'), related_name='replies'
         )
     reply = models.TextField(_('Resposta'))
+    reply_en = models.TextField(_('Resposta (EN)'), blank=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('Autor'), related_name='replies'
     )
@@ -49,8 +70,14 @@ class Reply(models.Model):
     created = models.DateTimeField(_('Criado em'), auto_now_add=True)
     modified = models.DateTimeField(_('Modificado em'), auto_now=True)
  
+    @property
+    def display_reply(self):
+        if _use_en() and self.reply_en:
+            return self.reply_en
+        return self.reply
+
     def __str__(self):
-        return self.reply[:100]
+        return self.display_reply[:100]
  
     class Meta:
         verbose_name = _('Resposta')

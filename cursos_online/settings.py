@@ -187,6 +187,10 @@ OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
 OPENAI_DEFAULT_MODEL = os.environ.get('OPENAI_DEFAULT_MODEL', 'gpt-4.1')
 OPENAI_EMBEDDING_MODEL = os.environ.get('OPENAI_EMBEDDING_MODEL', 'text-embedding-3-small')
 OPENAI_TIMEOUT = int(os.environ.get('OPENAI_TIMEOUT', '30'))
+OPENAI_IMAGE_TOOL_MODEL = os.environ.get('OPENAI_IMAGE_TOOL_MODEL', 'gpt-4o-mini')
+OPENAI_IMAGE_SIZE = os.environ.get('OPENAI_IMAGE_SIZE', '1024x1024')
+OPENAI_IMAGE_QUALITY = os.environ.get('OPENAI_IMAGE_QUALITY', 'auto')
+OPENAI_IMAGE_BACKGROUND = os.environ.get('OPENAI_IMAGE_BACKGROUND', 'auto')
 
 
 

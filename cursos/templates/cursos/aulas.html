@@ -11,7 +11,7 @@
     {% for aula in curso.aulas_disponiveis %}
     <article class="card reveal">
         <h2><a href="{% url 'cursos:aula' curso.slug aula.pk %}">{{ aula }}</a></h2>
-        <p>{{ aula.descricao|truncatewords:'20' }}</p>
+        <p>{{ aula.display_descricao|truncatewords:'20' }}</p>
         <div class="form-actions">
             <a href="{% url 'cursos:aula' curso.slug aula.pk %}" class="button primary">{% trans "Acessar aula" %}</a>
         </div>

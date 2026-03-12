@@ -13,6 +13,12 @@ class FormContatoCurso(forms.Form):
     mensagem = forms.CharField(
         label=_("Mensagem/Dúvida"), widget=forms.Textarea())
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nome'].widget.attrs.update({'placeholder': _('Seu nome')})
+        self.fields['email'].widget.attrs.update({'placeholder': _('Seu email')})
+        self.fields['mensagem'].widget.attrs.update({'placeholder': _('Escreva sua mensagem')})
+
     def send_email(self, curso):
         subject = "[%s] %s" % (curso, _("Contato"))
         mensagem = _("Nome: %(nome)s; E-mail: %(email)s; %(mensagem)s")
@@ -33,3 +39,7 @@ class ComentariosForm(forms.ModelForm):
     class Meta:
         model = Comentarios
         fields = ('comentario',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['comentario'].widget.attrs.update({'placeholder': _('Escreva um coment\u00e1rio')})

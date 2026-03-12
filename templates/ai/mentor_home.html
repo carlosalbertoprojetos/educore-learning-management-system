@@ -41,8 +41,12 @@
         <div class="grid cards">
             {% for thread in threads %}
             <a class="card" href="{% url 'ai:mentor_thread' thread.pk %}">
-                <h3>{{ thread.title }}</h3>
-                <p>{{ thread.course|default:all_courses }}</p>
+                <h3>{{ thread.display_title }}</h3>
+                {% if thread.course %}
+                <p>{{ thread.course.display_nome }}</p>
+                {% else %}
+                <p>{{ all_courses }}</p>
+                {% endif %}
                 <span class="meta">{% trans "Atualizado em" %} {{ thread.updated_at|date:"d/m/Y H:i" }}</span>
             </a>
             {% empty %}

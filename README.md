@@ -12,6 +12,7 @@ Plataforma de cursos online construída com Django, unindo catálogo de cursos, 
 - Como rodar localmente
 - Variáveis de ambiente
 - Testes
+- Checklist visual
 - Estrutura do projeto
 - CI
 - Licença
@@ -152,7 +153,12 @@ coverage report -m
 coverage html
 ```
 
+
 ---
+
+**Checklist visual**
+Para validar rapidamente a interface (modo claro/escuro, carrossel de curso e i18n), use o arquivo `CHECKLIST_VISUAL.md`.
+
 
 **Estrutura do projeto**
 ```

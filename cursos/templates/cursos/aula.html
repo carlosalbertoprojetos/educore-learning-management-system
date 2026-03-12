@@ -10,7 +10,7 @@
 {% block dashboard_content %}
 <div class="card">
     <h2>{{ aula }}</h2>
-    {{ aula.descricao|linebreaks }}
+    {{ aula.display_descricao|linebreaks }}
 
     <div class="section-header" style="margin-top: 20px;">
         <h3>{% trans "Materiais da aula" %}</h3>

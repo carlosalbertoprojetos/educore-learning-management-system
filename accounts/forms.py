@@ -19,6 +19,13 @@ class CadastrarUsuarioForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'username']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update({'placeholder': _('Seu email')})
+        self.fields['username'].widget.attrs.update({'placeholder': _('Seu usu\u00e1rio')})
+        self.fields['password1'].widget.attrs.update({'placeholder': _('Crie uma senha')})
+        self.fields['password2'].widget.attrs.update({'placeholder': _('Repita a senha')})
     
     def clean_password2(self):
         password1 = self.cleaned_data['password1']
@@ -39,6 +46,10 @@ class CadastrarUsuarioForm(forms.ModelForm):
 
 class ResetarSenhaForm(forms.Form):
     email = forms.EmailField(label=_('E-mail'))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update({'placeholder': _('Seu email')})
 
     def clean_email(self):
         """ 
@@ -86,6 +97,12 @@ class EditarUsuarioForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'name'] 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'placeholder': _('Seu usu\u00e1rio')})
+        self.fields['email'].widget.attrs.update({'placeholder': _('Seu email')})
+        self.fields['name'].widget.attrs.update({'placeholder': _('Seu nome completo')})
 
 
 # class EditarUsuarioForm(forms.ModelForm):

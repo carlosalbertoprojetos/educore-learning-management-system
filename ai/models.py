@@ -1,17 +1,18 @@
 ﻿from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from cursos.models import Cursos
 
 
 class AtlasDocument(models.Model):
     SOURCE_CHOICES = (
-        ("curso", "Curso"),
-        ("aula", "Aula"),
-        ("material", "Material"),
-        ("anuncio", "Anuncio"),
-        ("forum_thread", "Forum Thread"),
-        ("forum_reply", "Forum Reply"),
+        ("curso", _("Curso")),
+        ("aula", _("Aula")),
+        ("material", _("Material")),
+        ("anuncio", _("Anúncio")),
+        ("forum_thread", _("Tópico do fórum")),
+        ("forum_reply", _("Resposta do fórum")),
     )
 
     source_type = models.CharField(max_length=30, choices=SOURCE_CHOICES)
@@ -43,9 +44,9 @@ class AtlasDocument(models.Model):
 
 class MentorThread(models.Model):
     MODE_CHOICES = (
-        ("study", "Study"),
-        ("review", "Review"),
-        ("coach", "Coach"),
+        ("study", _("Estudo")),
+        ("review", _("Revisão")),
+        ("coach", _("Mentoria")),
     )
 
     user = models.ForeignKey(
@@ -75,9 +76,9 @@ class MentorThread(models.Model):
 
 class MentorMessage(models.Model):
     ROLE_CHOICES = (
-        ("system", "System"),
-        ("user", "User"),
-        ("assistant", "Assistant"),
+        ("system", _("Sistema")),
+        ("user", _("Usuário")),
+        ("assistant", _("Assistente")),
     )
 
     thread = models.ForeignKey(
@@ -99,14 +100,14 @@ class MentorMessage(models.Model):
 
 class LearningEvent(models.Model):
     EVENT_CHOICES = (
-        ("view_course", "View Course"),
-        ("view_lesson", "View Lesson"),
-        ("view_material", "View Material"),
-        ("view_announcements", "View Announcements"),
-        ("view_forum", "View Forum"),
-        ("view_thread", "View Thread"),
-        ("post_reply", "Post Reply"),
-        ("login", "Login"),
+        ("view_course", _("Ver curso")),
+        ("view_lesson", _("Ver aula")),
+        ("view_material", _("Ver material")),
+        ("view_announcements", _("Ver anúncios")),
+        ("view_forum", _("Ver fórum")),
+        ("view_thread", _("Ver tópico")),
+        ("post_reply", _("Publicar resposta")),
+        ("login", _("Login")),
     )
 
     user = models.ForeignKey(
@@ -134,9 +135,9 @@ class LearningEvent(models.Model):
 
 class RiskSignal(models.Model):
     STATUS_CHOICES = (
-        ("open", "Open"),
-        ("reviewed", "Reviewed"),
-        ("resolved", "Resolved"),
+        ("open", _("Aberto")),
+        ("reviewed", _("Revisado")),
+        ("resolved", _("Resolvido")),
     )
 
     label = models.CharField(max_length=60)
@@ -175,15 +176,15 @@ class RiskSignal(models.Model):
 
 class AIDraft(models.Model):
     DRAFT_TYPES = (
-        ("quiz", "Quiz"),
-        ("rubric", "Rubric"),
-        ("announcement", "Announcement"),
-        ("lesson_outline", "Lesson Outline"),
+        ("quiz", _("Quiz")),
+        ("rubric", _("Rubrica")),
+        ("announcement", _("Comunicado")),
+        ("lesson_outline", _("Plano de aula")),
     )
     STATUS_CHOICES = (
-        ("draft", "Draft"),
-        ("approved", "Approved"),
-        ("archived", "Archived"),
+        ("draft", _("Rascunho")),
+        ("approved", _("Aprovado")),
+        ("archived", _("Arquivado")),
     )
 
     course = models.ForeignKey(

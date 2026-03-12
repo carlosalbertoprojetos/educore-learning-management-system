@@ -7,7 +7,7 @@
     {% for anuncio in anuncios %}
     <article class="card reveal">
         <h2><a href="{% url 'cursos:anuncio' curso.slug anuncio.pk %}">{{ anuncio }}</a></h2>
-        {{ anuncio.conteudo|linebreaks }}
+        {{ anuncio.display_conteudo|linebreaks }}
         <div class="course-meta">
             {% with comentario=anuncio.comentarios.count %}
             {% if comentario > 0 %}

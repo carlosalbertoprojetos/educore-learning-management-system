@@ -10,7 +10,7 @@
 <div class="stack">
     <div class="card">
         <h2>{{ anuncio }}</h2>
-        {{ anuncio.conteudo|linebreaks }}
+        {{ anuncio.display_conteudo|linebreaks }}
     </div>
 
     <div class="card" id="comments">
@@ -23,7 +23,7 @@
         <div class="reply-card">
             <strong>{{ coment.usuario }}</strong>
             <span class="muted">{% blocktrans with time=coment.criado_em|timesince %}há {{ time }}{% endblocktrans %}</span>
-            <div>{{ coment.comentario|linebreaksbr }}</div>
+            <div>{{ coment.display_comentario|linebreaksbr }}</div>
         </div>
         {% empty %}
         <div class="alert">{% trans "Nenhum comentário para este anúncio." %}</div>

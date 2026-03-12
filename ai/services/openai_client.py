@@ -15,6 +15,20 @@ RESPONSES_URL = "https://api.openai.com/v1/responses"
 EMBEDDINGS_URL = "https://api.openai.com/v1/embeddings"
 
 
+def _normalize_api_key(raw):
+    if not raw:
+        return ""
+    key = str(raw).strip().strip('"').strip("'")
+    for prefix in ("OPENAI_API_KEY=", "OPENIA_API_KEY="):
+        if key.startswith(prefix):
+            key = key[len(prefix):].strip().strip('"').strip("'")
+    return key
+
+
+def _get_api_key():
+    return _normalize_api_key(getattr(settings, "OPENAI_API_KEY", ""))
+
+
 class OpenAIError(RuntimeError):
     pass
 
@@ -26,11 +40,11 @@ class OpenAIConfigError(OpenAIError):
 def is_configured():
     if _is_test_mode():
         return False
-    return bool(getattr(settings, "OPENAI_API_KEY", ""))
+    return bool(_get_api_key())
 
 
 def _request_json(url, payload):
-    api_key = getattr(settings, "OPENAI_API_KEY", "")
+    api_key = _get_api_key()
     if not api_key:
         raise OpenAIConfigError("OPENAI_API_KEY is not configured.")
     data = json.dumps(payload).encode("utf-8")
@@ -85,3 +99,33 @@ def create_embedding(text, model=None):
     }
     response = _request_json(EMBEDDINGS_URL, payload)
     return response
+
+
+def create_image(prompt, model=None, size=None, quality=None, background=None):
+    tool = {"type": "image_generation"}
+    if size:
+        tool["size"] = size
+    if quality:
+        tool["quality"] = quality
+    if background:
+        tool["background"] = background
+    payload = {
+        "model": model or getattr(settings, "OPENAI_IMAGE_TOOL_MODEL", None) or getattr(settings, "OPENAI_DEFAULT_MODEL", "gpt-4.1"),
+        "input": prompt,
+        "tools": [tool],
+    }
+    response = _request_json(RESPONSES_URL, payload)
+    return response
+
+
+def extract_image_results(response_payload):
+    results = []
+    if not response_payload:
+        return results
+    for item in response_payload.get("output", []):
+        if item.get("type") != "image_generation_call":
+            continue
+        result = item.get("result")
+        if result:
+            results.append(result)
+    return results

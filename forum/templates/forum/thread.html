@@ -36,7 +36,7 @@
             <div class="stack">
                 <article class="card">
                     <h2>{{ object }}</h2>
-                    {{ object.body|linebreaks }}
+                    {{ object.display_body|linebreaks }}
                     <div class="thread-meta">
                         <span>{% trans "Criado por" %} {{ object.author }}</span>
                         <span>{% blocktrans with time=object.created|timesince %}Há {{ time }}{% endblocktrans %}</span>
@@ -59,7 +59,7 @@
                     <div class="reply-card{% if reply.correct %} reply-highlight{% endif %}">
                         <strong>{{ reply.author }}</strong>
                         <span class="muted">{% blocktrans with time=reply.created|timesince %}há {{ time }}{% endblocktrans %}</span>
-                        <div>{{ reply.reply|linebreaksbr }}</div>
+                        <div>{{ reply.display_reply|linebreaksbr }}</div>
 
                         {% if reply.author == user %}
                         <div class="form-actions">

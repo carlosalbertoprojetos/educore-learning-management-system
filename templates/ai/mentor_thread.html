@@ -1,6 +1,6 @@
 ﻿{% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Mentor IA" %} | {{ thread.title }}{% endblock %}
+{% block title %}{% trans "Mentor IA" %} | {{ thread.display_title }}{% endblock %}
 
 {% block content %}
 {% trans "Todos os cursos" as all_courses %}
@@ -9,7 +9,7 @@
         <div class="section-head">
             <div>
                 <span class="eyebrow">{% trans "Mentor IA" %}</span>
-                <h2>{{ thread.title }}</h2>
+                <h2>{{ thread.display_title }}</h2>
                 <p>{% trans "Curso foco:" %} {{ thread.course|default:all_courses }} · {% trans "Atlas ativo:" %} {{ atlas_count }} {% trans "fontes" %}</p>
             </div>
             <a class="button ghost" href="{% url 'ai:mentor_home' %}">{% trans "Voltar" %}</a>

@@ -66,7 +66,7 @@
                                 {% trans "Início:" %} {{ enrollment.curso.data_inicial|date:'d/m/Y'|default:soon_label }}
                             </span>
                         </div>
-                        <p>{{ enrollment.curso.descricao|truncatechars:"200" }}</p>
+                        <p>{{ enrollment.curso.display_descricao|truncatechars:"200" }}</p>
                         <div class="form-actions">
                             <a href="{% url 'cursos:anuncios' enrollment.curso.slug %}" class="button primary">{% trans "Acessar" %}</a>
                             <a href="{% url 'cursos:cancelar_enrollment' enrollment.curso.slug %}" class="button danger">{% trans "Cancelar" %}</a>

@@ -11,7 +11,7 @@
 {% block dashboard_content %}
 <div class="card">
     <h2>{{ material }}</h2>
-    {{ material.embutido|safe }}
+    {{ material.display_embutido|safe }}
     <div class="form-actions">
         <a href="{% url 'cursos:aula' curso.slug aula.pk %}" class="button light">{% trans "Voltar" %}</a>
     </div>

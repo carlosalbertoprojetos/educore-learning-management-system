@@ -8,19 +8,60 @@
     <div class="hero-grid">
         <div>
             <span class="eyebrow">{% trans "Curso" %}</span>
+            {% if curso.destaque %}
+            <span class="badge featured">{% trans "Destaque" %}</span>
+            {% endif %}
             <h1>{{ curso }}</h1>
-            <p>{{ curso.descricao }}</p>
+            <p>{{ curso.display_descricao }}</p>
             <div class="hero-actions">
                 <a href="{% url 'cursos:enrollment' curso.slug %}" class="button primary">{% trans "Inscrever-se" %}</a>
                 <a href="{% url 'contato' %}" class="button outline">{% trans "Fale conosco" %}</a>
             </div>
         </div>
-        <div class="hero-media">
-            {% if curso.imagem %}
-            <img src="{{ curso.imagem.url }}" alt="{{ curso.nome }}" />
-            {% else %}
-            <img src="{% static 'img/course-image.png' %}" alt="{{ curso.nome }}" />
-            {% endif %}
+        <div class="course-carousel hero-media" data-interval="4200">
+            <div class="carousel-track">
+                {% if curso.imagem %}
+                <img class="carousel-slide is-active" src="{{ curso.imagem.url }}" alt="{{ curso.display_nome }}" />
+                {% else %}
+                <img class="carousel-slide is-active" src="{% static 'img/course-image.png' %}" alt="{{ curso.display_nome }}" />
+                {% endif %}
+                <img class="carousel-slide" src="{% static 'img/post-sample-image.jpg' %}" alt="{{ curso.display_nome }}" />
+                <img class="carousel-slide" src="{% static 'img/home-bg.jpg' %}" alt="{{ curso.display_nome }}" />
+                <img class="carousel-slide" src="{% static 'img/about-bg.jpg' %}" alt="{{ curso.display_nome }}" />
+                <img class="carousel-slide" src="{% static 'img/contact-bg2.jpg' %}" alt="{{ curso.display_nome }}" />
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" data-carousel="prev" aria-label="{% trans 'Anterior' %}">&lsaquo;</button>
+                <button class="carousel-btn" data-carousel="next" aria-label="{% trans 'Próxima' %}">&rsaquo;</button>
+            </div>
+            <div class="carousel-dots">
+                <button class="carousel-dot is-active" data-index="0" aria-label="1"></button>
+                <button class="carousel-dot" data-index="1" aria-label="2"></button>
+                <button class="carousel-dot" data-index="2" aria-label="3"></button>
+                <button class="carousel-dot" data-index="3" aria-label="4"></button>
+                <button class="carousel-dot" data-index="4" aria-label="5"></button>
+            </div>
+            <div class="carousel-thumbs">
+                <button class="carousel-thumb is-active" data-index="0" aria-label="1">
+                    {% if curso.imagem %}
+                    <img src="{{ curso.imagem.url }}" alt="{{ curso.display_nome }}" />
+                    {% else %}
+                    <img src="{% static 'img/course-image.png' %}" alt="{{ curso.display_nome }}" />
+                    {% endif %}
+                </button>
+                <button class="carousel-thumb" data-index="1" aria-label="2">
+                    <img src="{% static 'img/post-sample-image.jpg' %}" alt="{{ curso.display_nome }}" />
+                </button>
+                <button class="carousel-thumb" data-index="2" aria-label="3">
+                    <img src="{% static 'img/home-bg.jpg' %}" alt="{{ curso.display_nome }}" />
+                </button>
+                <button class="carousel-thumb" data-index="3" aria-label="4">
+                    <img src="{% static 'img/about-bg.jpg' %}" alt="{{ curso.display_nome }}" />
+                </button>
+                <button class="carousel-thumb" data-index="4" aria-label="5">
+                    <img src="{% static 'img/contact-bg2.jpg' %}" alt="{{ curso.display_nome }}" />
+                </button>
+            </div>
         </div>
     </div>
 </section>
@@ -32,7 +73,7 @@
                 <h2>{% trans "Sobre o curso" %}</h2>
                 <p>{% trans "Detalhes e objetivos principais." %}</p>
             </div>
-            {{ curso.sobre|linebreaks }}
+            {{ curso.display_sobre|linebreaks }}
         </div>
 
         <div class="card reveal delay-2" id="contato">

@@ -30,6 +30,10 @@
     --surface-glass: rgba(255, 255, 255, 0.7);
     --chip-bg: rgba(15, 118, 110, 0.12);
     --chip-text: var(--primary-strong);
+    --badge-featured-bg: linear-gradient(135deg, rgba(249, 115, 22, 0.22), rgba(249, 115, 22, 0.08));
+    --badge-featured-border: rgba(249, 115, 22, 0.5);
+    --badge-featured-text: #b45309;
+    --badge-featured-glow: 0 10px 30px rgba(249, 115, 22, 0.25);
 }
 
 :root[data-theme="dark"] {
@@ -56,6 +60,10 @@
     --surface-glass: rgba(15, 23, 42, 0.7);
     --chip-bg: rgba(20, 184, 166, 0.2);
     --chip-text: #99f6e4;
+    --badge-featured-bg: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(245, 158, 11, 0.1));
+    --badge-featured-border: rgba(245, 158, 11, 0.65);
+    --badge-featured-text: #fde68a;
+    --badge-featured-glow: 0 10px 30px rgba(245, 158, 11, 0.35);
 }
 
 
@@ -171,14 +179,18 @@ a:hover {
     width: 42px;
     height: 42px;
     border-radius: 14px;
-    background: linear-gradient(135deg, var(--primary), #0f9d92);
-    color: #fff;
+    background-color: #0f766e;
+    background-image: url('../img/brand-icon.svg');
+    background-size: cover;
+    background-position: center;
+    color: rgba(255, 255, 255, 0.9);
     display: grid;
     place-items: center;
     font-weight: 700;
     font-family: var(--font-display);
     letter-spacing: 0.05em;
     box-shadow: var(--shadow-soft);
+    text-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
 }
 
 .brand-text {
@@ -287,6 +299,15 @@ a:hover {
     background: var(--surface);
     color: var(--text);
     border-color: var(--line);
+}
+
+
+.button.icon {
+    gap: 10px;
+}
+
+.button.icon i {
+    font-size: 0.95rem;
 }
 
 .card,
@@ -481,6 +502,28 @@ a:hover {
     color: var(--accent-strong);
     font-weight: 600;
     font-size: 0.85rem;
+}
+
+
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.badge.featured {
+    background: var(--badge-featured-bg);
+    color: var(--badge-featured-text);
+    border: 1px solid var(--badge-featured-border);
+    box-shadow: var(--badge-featured-glow);
+    letter-spacing: 0.12em;
 }
 
 .pill {
@@ -980,12 +1023,173 @@ ul.errorlist {
 
 
 .theme-toggle {
-    min-width: 130px;
+    min-width: 150px;
+}
+
+.theme-toggle .toggle-label {
+    white-space: nowrap;
+}
+
+.theme-toggle.is-animating {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: var(--shadow-soft);
+}
+
+.lang-button {
+    min-width: 120px;
 }
 
 @media (max-width: 720px) {
-    .theme-toggle {
+    .theme-toggle,
+    .lang-button {
         width: 100%;
         justify-content: center;
     }
+}
+
+
+.course-carousel {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    min-height: 280px;
+}
+
+.course-carousel .carousel-track {
+    position: relative;
+    min-height: 280px;
+}
+
+.course-carousel .carousel-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.02);
+    transition: opacity 0.45s ease, transform 0.6s ease;
+}
+
+.course-carousel .carousel-slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+    position: relative;
+}
+
+.course-carousel .carousel-controls {
+    position: absolute;
+    inset: auto 16px 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.course-carousel .carousel-btn {
+    pointer-events: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(15, 23, 42, 0.55);
+    color: #fff;
+    font-size: 1.2rem;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.course-carousel .carousel-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(15, 23, 42, 0.75);
+}
+
+.course-carousel .carousel-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.course-carousel .carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.course-carousel .carousel-dot.is-active {
+    background: #fff;
+    transform: scale(1.2);
+}
+
+.course-carousel.single .carousel-controls,
+.course-carousel.single .carousel-dots {
+    display: none;
+}
+
+
+.course-carousel .carousel-thumbs {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px;
+    background: var(--surface-glass);
+    border-top: 1px solid var(--line);
+    backdrop-filter: blur(6px);
+}
+
+.course-carousel .carousel-thumb {
+    border: 1px solid transparent;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.course-carousel .carousel-thumb img {
+    width: 100%;
+    height: 64px;
+    object-fit: cover;
+    display: block;
+}
+
+.course-carousel .carousel-thumb.is-active {
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
+}
+
+@media (max-width: 720px) {
+    .course-carousel .carousel-thumbs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .course-carousel .carousel-thumb img {
+        height: 56px;
+    }
+}
+
+
+.lang-button {
+    border-radius: 999px;
+    background: var(--surface);
+    border-color: var(--line);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+}
+
+.lang-button .lang-code {
+    font-weight: 700;
 }

@@ -36,7 +36,7 @@
             <div class="stack">
                 {% for thread in object_list %}
                 <article class="card thread-card reveal">
-                    <h3><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></h3>
+                    <h3><a href="{{ thread.get_absolute_url }}">{{ thread.display_title }}</a></h3>
                     <div class="thread-meta">
                         <span>{% trans "Criado por" %} {{ thread.author }}</span>
                         <span>

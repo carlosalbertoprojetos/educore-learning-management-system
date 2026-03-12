@@ -600,7 +600,6 @@ msgstr "%(time)s ago"
 
 msgid "Atualizado há %(time)s"
 msgstr "Updated %(time)s ago"
-\nmsgid \"Senha\"\nmsgstr \"Password\"\n\nmsgid \"Confirma\\u00e7\\u00e3o de Senha\"\nmsgstr \"Password confirmation\"\n\nmsgid \"As senhas n\\u00e3o s\\u00e3o iguais\"\nmsgstr \"Passwords do not match.\"\n\nmsgid \"Nenhum usu\\u00e1rio encontrado com este email.\"\nmsgstr \"No user found with this email.\"\n\nmsgid \"Mensagem de Cursos Online\"\nmsgstr \"Message from CursosOnline\"\n\nmsgid \"De {nome} <{email}> escreveu:\\n\\n{mensagem}\"\nmsgstr \"From {nome} <{email}> wrote:\\n\\n{mensagem}\"\n\nmsgid \"Inscri\\u00e7\\u00e3o realizada com sucesso!!!\"\nmsgstr \"Enrollment completed successfully!!!\"\n\nmsgid \"Usu\\u00e1rio j\\u00e1 inscrito neste curso.\"\nmsgstr \"User already enrolled in this course.\"\n\nmsgid \"Inscri\\u00e7\\u00e3o cancelada com sucesso!!!\"\nmsgstr \"Enrollment canceled successfully!!!\"\n\nmsgid \"Seu coment\\u00e1rio foi salvo com sucesso!!!\"\nmsgstr \"Your comment was saved successfully!!!\"\n\nmsgid \"Esta aula n\\u00e3o est\\u00e1 dispon\\u00edvel\"\nmsgstr \"This lesson is not available.\"\n\nmsgid \"Este material n\\u00e3o est\\u00e1 dispon\\u00edvel para download.\"\nmsgstr \"This material is not available for download.\"\n\nmsgid \"Precisa estar logado para responder ao t\\u00f3pico.\"\nmsgstr \"You must be logged in to reply to the topic.\"\n\nmsgid \"A sua resposta foi enviada com sucesso\"\nmsgstr \"Your reply was sent successfully.\"\n\nmsgid \"Resposta atualizada com sucesso\"\nmsgstr \"Reply updated successfully.\"\n\nmsgid \"E-mail\"\nmsgstr \"Email\"\n\nmsgid \"Mensagem/D\\u00favida\"\nmsgstr \"Message/Question\"\n\nmsgid \"Identificador\"\nmsgstr \"Identifier\"\n\nmsgid \"Mensagem\"\nmsgstr \"Message\"\n\nmsgid \"Autor\"\nmsgstr \"Author\"\n\nmsgid \"Visualiza\\u00e7\\u00f5es\"\nmsgstr \"Views\"\n\nmsgid \"Criado em\"\nmsgstr \"Created on\"\n\nmsgid \"Modificado em\"\nmsgstr \"Modified on\"\n\nmsgid \"Correta?\"\nmsgstr \"Correct?\"\n\nmsgid \"Chave\"\nmsgstr \"Key\"\n\nmsgid \"Confirmado?\"\nmsgstr \"Confirmed?\"\n\nmsgid \"Data de Entrada\"\nmsgstr \"Join date\"\n\nmsgid \"Est\\u00e1 ativo?\"\nmsgstr \"Is active?\"\n\nmsgid \"\\u00c9 da equipe?\"\nmsgstr \"Is staff?\"\n\nmsgid \"Usu\\u00e1rio\"\nmsgstr \"User\"\n\nmsgid \"Usu\\u00e1rios\"\nmsgstr \"Users\"\n\nmsgid \"Resposta\"\nmsgstr \"Reply\"\n\nmsgid \"T\\u00f3pico\"\nmsgstr \"Topic\"\n
 
 msgid "Senha"
 msgstr "Password"
@@ -700,3 +699,133 @@ msgstr "Reply"
 
 msgid "Tópico"
 msgstr "Topic"
+
+msgid "Tema claro"
+msgstr "Light theme"
+
+msgid "Tema escuro"
+msgstr "Dark theme"
+
+msgid "Nome (EN)"
+msgstr "Name (EN)"
+
+msgid "Descrição Simples (EN)"
+msgstr "Short description (EN)"
+
+msgid "Sobre o Curso (EN)"
+msgstr "About the course (EN)"
+
+msgid "Descrição (EN)"
+msgstr "Description (EN)"
+
+msgid "Vídeo da aula (EN)"
+msgstr "Lesson video (EN)"
+
+msgid "Título (EN)"
+msgstr "Title (EN)"
+
+msgid "Conteúdo (EN)"
+msgstr "Content (EN)"
+
+msgid "Comentário (EN)"
+msgstr "Comment (EN)"
+
+msgid "Mensagem (EN)"
+msgstr "Message (EN)"
+
+msgid "Resposta (EN)"
+msgstr "Reply (EN)"
+
+msgid "Destaque"
+msgstr "Featured"
+
+msgid "Seu email"
+msgstr "Your email"
+
+msgid "Seu usuário"
+msgstr "Your username"
+
+msgid "Crie uma senha"
+msgstr "Create a password"
+
+msgid "Repita a senha"
+msgstr "Repeat the password"
+
+msgid "Seu nome completo"
+msgstr "Your full name"
+
+msgid "Seu nome"
+msgstr "Your name"
+
+msgid "Escreva sua mensagem"
+msgstr "Write your message"
+
+msgid "Escreva um comentário"
+msgstr "Write a comment"
+
+msgid "Nova sessão"
+msgstr "New session"
+
+msgid "Descreva sua dúvida"
+msgstr "Describe your question"
+
+msgid "Tipo de rascunho"
+msgstr "Draft type"
+
+msgid "Título do rascunho"
+msgstr "Draft title"
+
+msgid "Ex: iniciantes"
+msgstr "E.g., beginners"
+
+msgid "Objetivos principais"
+msgstr "Main objectives"
+
+msgid "Limites e formato"
+msgstr "Limits and format"
+
+msgid "Tom desejado"
+msgstr "Desired tone"
+
+msgid "Cole o material base"
+msgstr "Paste the source material"
+
+msgid "Anúncio"
+msgstr "Announcement"
+
+msgid "Tópico do fórum"
+msgstr "Forum topic"
+
+msgid "Resposta do fórum"
+msgstr "Forum reply"
+
+msgid "Revisão"
+msgstr "Review"
+
+msgid "Ver anúncios"
+msgstr "View announcements"
+
+msgid "Ver fórum"
+msgstr "View forum"
+
+msgid "Ver tópico"
+msgstr "View topic"
+
+msgid "Rubrica"
+msgstr "Rubric"
+
+msgid "Comunicado"
+msgstr "Announcement"
+
+msgid "Plano de aula"
+msgstr "Lesson plan"
+
+msgid "Aberto"
+msgstr "Open"
+
+msgid "Revisado"
+msgstr "Reviewed"
+
+msgid "Resolvido"
+msgstr "Resolved"
+
