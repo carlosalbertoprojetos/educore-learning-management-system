@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 
 :root {
     --bg: #f6f4ef;
@@ -161,10 +161,16 @@ a:hover {
 
 .nav {
     display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 0;
+}
+
+.nav-top {
+    display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 18px;
-    padding: 18px 0;
     flex-wrap: wrap;
 }
 
@@ -175,23 +181,7 @@ a:hover {
     color: var(--text);
 }
 
-.brand-mark {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    background-color: #0f766e;
-    background-image: url('../img/brand-icon.svg');
-    background-size: cover;
-    background-position: center;
-    color: rgba(255, 255, 255, 0.9);
-    display: grid;
-    place-items: center;
-    font-weight: 700;
-    font-family: var(--font-display);
-    letter-spacing: 0.05em;
-    box-shadow: var(--shadow-soft);
-    text-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
-}
+
 
 .brand-text {
     display: grid;
@@ -215,6 +205,8 @@ a:hover {
     gap: 16px;
     flex-wrap: wrap;
     font-weight: 500;
+    width: 100%;
+    justify-content: center;
 }
 
 .nav-links a {
@@ -310,6 +302,41 @@ a:hover {
     font-size: 0.95rem;
 }
 
+.button.icon-only {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    flex: 0 0 42px;
+    border-radius: 14px;
+    background-color: #0f766e;
+    background-image: url('../img/brand-icon.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: rgba(255, 255, 255, 0.9);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+    box-shadow: var(--shadow-soft);
+    text-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
+}
+
+.button.icon-only i,
+.button.icon-only img {
+    font-size: 1rem;
+    display: block;
+}
 .card,
 .well {
     background: var(--surface);
@@ -799,6 +826,17 @@ ul.errorlist {
     display: none !important;
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
 .reveal {
     opacity: 0;
     transform: translateY(16px);
@@ -850,14 +888,16 @@ ul.errorlist {
         grid-template-columns: 1fr;
     }
 
-    .nav {
+    .nav-top {
         justify-content: center;
     }
 
     .nav-links {
-        justify-content: center;
+        display: none;
     }
 }
+
+    }
 
 .section-head {
     display: flex;
@@ -990,9 +1030,23 @@ ul.errorlist {
 }
 
 @media (max-width: 960px) {
-    .grid.split {
+    .hero-grid,
+    .grid-2,
+    .grid-3,
+    .dashboard,
+    .forum-layout,
+    .footer-grid {
         grid-template-columns: 1fr;
     }
+
+    .nav-top {
+        justify-content: center;
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
 }
 
 
@@ -1003,7 +1057,7 @@ ul.errorlist {
 }
 
 .lang-switch .button {
-    padding: 8px 14px;
+    /* padding: 8px 14px; */
 }
 
 .lang-switch.footer {
@@ -1023,11 +1077,20 @@ ul.errorlist {
 
 
 .theme-toggle {
-    min-width: 150px;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.theme-toggle .toggle-label {
-    white-space: nowrap;
+.theme-toggle i {
+    width: 15px;
+    height: 15px;
+    font-size: 1rem;
+    display: block;
+    line-height: 1;
 }
 
 .theme-toggle.is-animating {
@@ -1036,13 +1099,31 @@ ul.errorlist {
 }
 
 .lang-button {
-    min-width: 120px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--surface);
+    border-color: var(--line);
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    font-size: 0;
 }
 
-@media (max-width: 720px) {
+.lang-flag {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: block;
+    object-fit: cover;
+}@media (max-width: 720px) {
     .theme-toggle,
     .lang-button {
-        width: 100%;
+        width: 44px;
+        height: 44px;
         justify-content: center;
     }
 }
@@ -1181,15 +1262,20 @@ ul.errorlist {
 }
 
 
-.lang-button {
-    border-radius: 999px;
-    background: var(--surface);
-    border-color: var(--line);
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-}
 
-.lang-button .lang-code {
-    font-weight: 700;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

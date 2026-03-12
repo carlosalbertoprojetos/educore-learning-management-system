@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Brasil">
+  <defs>
+    <clipPath id="clip-br">
+      <circle cx="128" cy="128" r="128" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip-br)">
+    <rect width="256" height="256" fill="#009C3B" />
+    <polygon points="128,28 228,128 128,228 28,128" fill="#FFDF00" />
+    <circle cx="128" cy="128" r="56" fill="#002776" />
+    <path d="M64 124c28-14 100-14 128 0" stroke="#FFFFFF" stroke-width="10" fill="none" />
+  </g>
+</svg>

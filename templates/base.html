@@ -24,8 +24,9 @@
 
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" />
-    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}" />
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="{% static 'favicon.svg' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
 
     <title>{% block title %}CursosOnline{% endblock title %}</title>
 </head>
@@ -34,18 +35,58 @@
     <div class="site">
         <header class="site-header">
             <div class="container nav">
-                <a href="{% url 'home' %}" class="brand">
-                    <span class="brand-mark">CO</span>
-                    <span class="brand-text">
-                        <span class="brand-title">CursosOnline</span>
-                        <span class="brand-subtitle">{% trans "Aprenda, pratique, avance" %}</span>
-                    </span>
-                </a>
+                <div class="nav-top">
+                    <a href="{% url 'home' %}" class="brand">
+                        <span class="brand-mark" aria-label="CursosOnline" title="CursosOnline">
+                            <span class="sr-only">CursosOnline</span>
+                        </span>
+                        <span class="brand-text">
+                            <span class="brand-title">CursosOnline</span>
+                            <span class="brand-subtitle">{% trans "Aprenda, pratique, avance" %}</span>
+                        </span>
+                    </a>
+
+                    <div class="nav-actions">
+                        <button type="button" class="button light theme-toggle icon icon-only" id="theme-toggle"
+                            data-label-light="{% trans 'Tema claro' %}"
+                            data-label-dark="{% trans 'Tema escuro' %}"
+                            data-icon-light="fa-sun-o"
+                            data-icon-dark="fa-moon-o"
+                            aria-label="{% trans 'Tema escuro' %}"
+                            title="{% trans 'Tema escuro' %}">
+                            <i class="fa fa-moon-o" aria-hidden="true"></i>
+                        </button>
+                        {% get_current_language as LANGUAGE_CODE %}
+                        <form action="{% url 'set_language' %}" method="post" class="lang-switch">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+                            {% if LANGUAGE_CODE == 'pt-br' %}
+                            <input type="hidden" name="language" value="en" />
+                            <button type="submit" class="button light icon lang-button icon-only" title="English" aria-label="English">
+                                <img class="lang-flag" src="{% static 'img/flags/us-circle.svg' %}" alt="English" />
+                            </button>
+                            {% else %}
+                            <input type="hidden" name="language" value="pt-br" />
+                            <button type="submit" class="button light icon lang-button icon-only" title="Portugu√™s" aria-label="Portugu√™s">
+                                <img class="lang-flag" src="{% static 'img/flags/br-circle.svg' %}" alt="Portugu√™s" />
+                            </button>
+                            {% endif %}
+                        </form>
+
+                        {% if user.is_authenticated %}
+                        <span class="chip">{% trans "Ol√°" %}, {{ user }}</span>
+                        <a href="{% url 'accounts:logout' %}" class="button ghost">{% trans "Sair" %}</a>
+                        {% else %}
+                        <a href="{% url 'accounts:login' %}" class="button ghost">{% trans "Entrar" %}</a>
+                        <a href="{% url 'accounts:cadastrar_usuario' %}" class="button primary">{% trans "Criar conta" %}</a>
+                        {% endif %}
+                    </div>
+                </div>
 
                 <nav class="nav-links">
                     <a href="{% url 'contato' %}">{% trans "Contato" %}</a>
                     <a href="{% url 'cursos:lista_cursos' %}">{% trans "Cursos" %}</a>
-                    <a href="{% url 'forum:forum_index' %}">{% trans "FÛrum" %}</a>
+                    <a href="{% url 'forum:forum_index' %}">{% trans "F√≥rum" %}</a>
                     {% if user.is_authenticated %}
                     <a href="{% url 'ai:mentor_home' %}">{% trans "Mentor IA" %}</a>
                     {% endif %}
@@ -61,44 +102,6 @@
                     <a href="/admin/">{% trans "Admin" %}</a>
                     {% endif %}
                 </nav>
-
-                <div class="nav-actions">
-
-                    <button type="button" class="button light theme-toggle icon" id="theme-toggle"
-                        data-label-light="{% trans 'Tema claro' %}"
-                        data-label-dark="{% trans 'Tema escuro' %}"
-                        data-icon-light="fa-sun-o"
-                        data-icon-dark="fa-moon-o"
-                        aria-label="{% trans 'Tema escuro' %}">
-                        <i class="fa fa-moon-o" aria-hidden="true"></i>
-                        <span class="toggle-label">{% trans "Tema escuro" %}</span>
-                    </button>
-                    {% get_current_language as LANGUAGE_CODE %}
-                    <form action="{% url 'set_language' %}" method="post" class="lang-switch">
-                        {% csrf_token %}
-                        <input name="next" type="hidden" value="{{ request.get_full_path }}" />
-                        {% if LANGUAGE_CODE == 'pt-br' %}
-                        <input type="hidden" name="language" value="en" />
-                        <button type="submit" class="button light icon lang-button" title="English" aria-label="English">
-                            <i class="fa fa-globe" aria-hidden="true"></i>
-                            <span class="lang-code">EN</span>
-                        </button>
-                        {% else %}
-                        <input type="hidden" name="language" value="pt-br" />
-                        <button type="submit" class="button light icon lang-button icon-only" title="PortuguÍs" aria-label="PortuguÍs">
-                            <img class="lang-flag" src="{% static 'img/flags/br-circle.svg' %}" alt="PortuguÍs" />
-                        </button>
-                        {% endif %}
-                    </form>
-
-                    {% if user.is_authenticated %}
-                    <span class="chip">{% trans "Ol·" %}, {{ user }}</span>
-                    <a href="{% url 'accounts:logout' %}" class="button ghost">{% trans "Sair" %}</a>
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}" class="button ghost">{% trans "Entrar" %}</a>
-                    <a href="{% url 'accounts:cadastrar_usuario' %}" class="button primary">{% trans "Criar conta" %}</a>
-                    {% endif %}
-                </div>
             </div>
         </header>
 
@@ -120,7 +123,9 @@
         <footer class="site-footer">
             <div class="container footer-grid">
                 <div class="footer-brand">
-                    <span class="brand-mark">CO</span>
+                    <span class="brand-mark" aria-label="CursosOnline" title="CursosOnline">
+                        <span class="sr-only">CursosOnline</span>
+                    </span>
                     <div>
                         <strong>CursosOnline</strong>
                         <p>{% trans "Plataforma educacional para cursos, materiais e comunidade." %}</p>
@@ -132,20 +137,19 @@
                     <a href="{% url 'contato' %}">{% trans "Fale conosco" %}</a>
                 </div>
                 <div class="footer-note">
-                    <span>{% trans "Sistema auxiliar de gest„o para cursos a dist‚ncia." %}</span>
+                    <span>{% trans "Sistema auxiliar de gest√É¬£o para cursos a dist√É¬¢ncia." %}</span>
                     <form action="{% url 'set_language' %}" method="post" class="lang-switch footer">
                         {% csrf_token %}
                         <input name="next" type="hidden" value="{{ request.get_full_path }}" />
                         {% if LANGUAGE_CODE == 'pt-br' %}
                         <input type="hidden" name="language" value="en" />
-                        <button type="submit" class="button light icon lang-button" title="English" aria-label="English">
-                            <i class="fa fa-globe" aria-hidden="true"></i>
-                            <span class="lang-code">EN</span>
+                        <button type="submit" class="button light icon lang-button icon-only" title="English" aria-label="English">
+                            <img class="lang-flag" src="{% static 'img/flags/us-circle.svg' %}" alt="English" />
                         </button>
                         {% else %}
                         <input type="hidden" name="language" value="pt-br" />
-                        <button type="submit" class="button light icon lang-button icon-only" title="PortuguÍs" aria-label="PortuguÍs">
-                            <img class="lang-flag" src="{% static 'img/flags/br-circle.svg' %}" alt="PortuguÍs" />
+                        <button type="submit" class="button light icon lang-button icon-only" title="Portugu√É¬™s" aria-label="Portugu√É¬™s">
+                            <img class="lang-flag" src="{% static 'img/flags/br-circle.svg' %}" alt="Portugu√É¬™s" />
                         </button>
                         {% endif %}
                     </form>
@@ -162,6 +166,11 @@
 </body>
 
 </html>
+
+
+
+
+
 
 
 

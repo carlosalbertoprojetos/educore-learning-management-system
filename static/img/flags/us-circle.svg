@@ -1,0 +1,57 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="United States">
+  <defs>
+    <clipPath id="clip-us">
+      <circle cx="128" cy="128" r="128" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip-us)">
+    <rect width="256" height="256" fill="#B22234" />
+    <rect y="19.692" width="256" height="19.692" fill="#FFFFFF" />
+    <rect y="59.076" width="256" height="19.692" fill="#FFFFFF" />
+    <rect y="98.46" width="256" height="19.692" fill="#FFFFFF" />
+    <rect y="137.844" width="256" height="19.692" fill="#FFFFFF" />
+    <rect y="177.228" width="256" height="19.692" fill="#FFFFFF" />
+    <rect y="216.612" width="256" height="19.692" fill="#FFFFFF" />
+    <rect width="112" height="98" fill="#3C3B6E" />
+    <g fill="#FFFFFF">
+      <circle cx="14" cy="12" r="3" />
+      <circle cx="32" cy="12" r="3" />
+      <circle cx="50" cy="12" r="3" />
+      <circle cx="68" cy="12" r="3" />
+      <circle cx="86" cy="12" r="3" />
+      <circle cx="104" cy="12" r="3" />
+
+      <circle cx="23" cy="26" r="3" />
+      <circle cx="41" cy="26" r="3" />
+      <circle cx="59" cy="26" r="3" />
+      <circle cx="77" cy="26" r="3" />
+      <circle cx="95" cy="26" r="3" />
+
+      <circle cx="14" cy="40" r="3" />
+      <circle cx="32" cy="40" r="3" />
+      <circle cx="50" cy="40" r="3" />
+      <circle cx="68" cy="40" r="3" />
+      <circle cx="86" cy="40" r="3" />
+      <circle cx="104" cy="40" r="3" />
+
+      <circle cx="23" cy="54" r="3" />
+      <circle cx="41" cy="54" r="3" />
+      <circle cx="59" cy="54" r="3" />
+      <circle cx="77" cy="54" r="3" />
+      <circle cx="95" cy="54" r="3" />
+
+      <circle cx="14" cy="68" r="3" />
+      <circle cx="32" cy="68" r="3" />
+      <circle cx="50" cy="68" r="3" />
+      <circle cx="68" cy="68" r="3" />
+      <circle cx="86" cy="68" r="3" />
+      <circle cx="104" cy="68" r="3" />
+
+      <circle cx="23" cy="82" r="3" />
+      <circle cx="41" cy="82" r="3" />
+      <circle cx="59" cy="82" r="3" />
+      <circle cx="77" cy="82" r="3" />
+      <circle cx="95" cy="82" r="3" />
+    </g>
+  </g>
+</svg>

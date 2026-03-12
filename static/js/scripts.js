@@ -31,16 +31,11 @@ $( document ).ready(function() {
         if (!nextLabel) {
             nextLabel = theme === 'dark' ? 'Light' : 'Dark';
         }
-        var labelEl = themeToggle.find('.toggle-label');
-        if (labelEl.length) {
-            labelEl.text(nextLabel);
-        } else {
-            themeToggle.text(nextLabel);
-        }
         if (nextIcon) {
             themeToggle.find('i').attr('class', 'fa ' + nextIcon);
         }
         themeToggle.attr('aria-label', nextLabel);
+        themeToggle.attr('title', nextLabel);
     }
 
     function applyTheme(theme) {
@@ -168,3 +163,5 @@ $( document ).ready(function() {
     });
 
 });
+
+
