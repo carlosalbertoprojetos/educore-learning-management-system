@@ -70,12 +70,20 @@
                         {% if user.is_authenticated %}
                         <a href="{% url 'accounts:painel' %}">{% trans "Painel" %}</a>
                         {% if user.is_staff %}
-                            {% if user.is_superuser %}
+                        <details class="nav-dropdown">
+                            <summary class="nav-dropdown-toggle" aria-label="{% trans 'Administração' %}" title="{% trans 'Administração' %}">
+                                <span>{% trans "Administração" %}</span>
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </summary>
+                            <div class="nav-dropdown-menu">
+                                {% if user.is_superuser %}
                                 <a href="/admin/">{% trans "Admin" %}</a>
-                            {% endif %}
-                            <a href="{% url 'ai:radar_dashboard' %}">{% trans "Radar" %}</a>
-                            <a href="{% url 'ai:studio' %}">{% trans "Studio" %}</a>
-                            <a href="{% url 'ai:atlas_rebuild' %}">{% trans "Atlas" %}</a>
+                                {% endif %}
+                                <a href="{% url 'ai:radar_dashboard' %}">{% trans "Radar" %}</a>
+                                <a href="{% url 'ai:studio' %}">{% trans "Studio" %}</a>
+                                <a href="{% url 'ai:atlas_rebuild' %}">{% trans "Atlas" %}</a>
+                            </div>
+                        </details>
                         {% endif %}
                         {% endif %}
                         <a href="{% url 'cursos:lista_cursos' %}">{% trans "Cursos" %}</a>

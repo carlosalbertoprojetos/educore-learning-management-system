@@ -163,7 +163,7 @@ a:hover {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    padding: 0 10px 14px;
+    padding: 10px 14px;
 }
 
 .nav-top {
@@ -267,6 +267,10 @@ a:hover {
 
 .nav-dropdown-toggle::-webkit-details-marker {
     display: none;
+}
+
+.nav-dropdown-toggle::marker {
+    content: "";
 }
 
 .nav-dropdown:hover .nav-dropdown-toggle {
@@ -1032,7 +1036,7 @@ ul.errorlist {
     }
 
     .floating-controls {
-        top: 40%;
+        top: 15%;
     }
 
     #primary-nav {
