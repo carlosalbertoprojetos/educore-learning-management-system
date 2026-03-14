@@ -829,3 +829,6 @@ msgstr "Reviewed"
 msgid "Resolvido"
 msgstr "Resolved"
 
+msgid "Administração"
+msgstr "Administration"
+

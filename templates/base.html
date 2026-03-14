@@ -1,4 +1,4 @@
-{% load static i18n %}
+﻿{% load static i18n %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
 
@@ -24,19 +24,34 @@
 
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" />
-    <link rel="icon" type="image/svg+xml" sizes="any" href="{% static 'favicon.svg' %}" />
-    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v={{ FAVICON_VERSION }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v={{ FAVICON_VERSION }}" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v={{ FAVICON_VERSION }}" />
+    <link rel="shortcut icon" href="/favicon.ico?v={{ FAVICON_VERSION }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v={{ FAVICON_VERSION }}" />
 
     <title>{% block title %}CursosOnline{% endblock title %}</title>
 </head>
 
 <body>
     <div class="site">
-        <header class="site-header">
+                <header class="site-header">
             <div class="container nav">
-                <div class="nav-top">
-                    <a href="{% url 'home' %}" class="brand">
+                <div class="nav-top nav-top--mobile">
+                    <a href="{% url 'home' %}" class="brand brand--mobile">
+                        <span class="brand-mark" aria-label="CursosOnline" title="CursosOnline">
+                            <span class="sr-only">CursosOnline</span>
+                        </span>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <span class="chip nav-chip">{% trans "Olá" %}, {{ user }}</span>
+                    {% endif %}
+                    <button type="button" class="button ghost nav-toggle icon icon-only" id="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="{% trans 'Menu' %}" title="{% trans 'Menu' %}">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="nav-top nav-top--desktop">
+                    <a href="{% url 'home' %}" class="brand brand--desktop">
                         <span class="brand-mark" aria-label="CursosOnline" title="CursosOnline">
                             <span class="sr-only">CursosOnline</span>
                         </span>
@@ -45,65 +60,69 @@
                             <span class="brand-subtitle">{% trans "Aprenda, pratique, avance" %}</span>
                         </span>
                     </a>
-
-                    <div class="nav-actions">
-                        <button type="button" class="button light theme-toggle icon icon-only" id="theme-toggle"
-                            data-label-light="{% trans 'Tema claro' %}"
-                            data-label-dark="{% trans 'Tema escuro' %}"
-                            data-icon-light="fa-sun-o"
-                            data-icon-dark="fa-moon-o"
-                            aria-label="{% trans 'Tema escuro' %}"
-                            title="{% trans 'Tema escuro' %}">
-                            <i class="fa fa-moon-o" aria-hidden="true"></i>
-                        </button>
-                        {% get_current_language as LANGUAGE_CODE %}
-                        <form action="{% url 'set_language' %}" method="post" class="lang-switch">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ request.get_full_path }}" />
-                            {% if LANGUAGE_CODE == 'pt-br' %}
-                            <input type="hidden" name="language" value="en" />
-                            <button type="submit" class="button light icon lang-button icon-only" title="English" aria-label="English">
-                                <img class="lang-flag" src="{% static 'img/flags/us-circle.svg' %}" alt="English" />
-                            </button>
-                            {% else %}
-                            <input type="hidden" name="language" value="pt-br" />
-                            <button type="submit" class="button light icon lang-button icon-only" title="Português" aria-label="Português">
-                                <img class="lang-flag" src="{% static 'img/flags/br-circle.svg' %}" alt="Português" />
-                            </button>
-                            {% endif %}
-                        </form>
-
-                        {% if user.is_authenticated %}
-                        <span class="chip">{% trans "Olá" %}, {{ user }}</span>
-                        <a href="{% url 'accounts:logout' %}" class="button ghost">{% trans "Sair" %}</a>
-                        {% else %}
-                        <a href="{% url 'accounts:login' %}" class="button ghost">{% trans "Entrar" %}</a>
-                        <a href="{% url 'accounts:cadastrar_usuario' %}" class="button primary">{% trans "Criar conta" %}</a>
-                        {% endif %}
-                    </div>
+                    {% if user.is_authenticated %}
+                    <span class="chip nav-chip">{% trans "Olá" %}, {{ user }}</span>
+                    {% endif %}
                 </div>
 
-                <nav class="nav-links">
-                    <a href="{% url 'contato' %}">{% trans "Contato" %}</a>
-                    <a href="{% url 'cursos:lista_cursos' %}">{% trans "Cursos" %}</a>
-                    <a href="{% url 'forum:forum_index' %}">{% trans "Fórum" %}</a>
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'ai:mentor_home' %}">{% trans "Mentor IA" %}</a>
-                    {% endif %}
-                    {% if user.is_staff %}
-                    <a href="{% url 'ai:radar_dashboard' %}">{% trans "Radar" %}</a>
-                    <a href="{% url 'ai:studio' %}">{% trans "Studio" %}</a>
-                    <a href="{% url 'ai:atlas_rebuild' %}">{% trans "Atlas" %}</a>
-                    {% endif %}
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'accounts:painel' %}">{% trans "Painel" %}</a>
-                    {% endif %}
-                    {% if user.is_superuser %}
-                    <a href="/admin/">{% trans "Admin" %}</a>
-                    {% endif %}
+                <nav class="bar-nav-links" id="primary-nav">
+                    <div class="nav-links">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'accounts:painel' %}">{% trans "Painel" %}</a>
+                        {% if user.is_staff %}
+                            {% if user.is_superuser %}
+                                <a href="/admin/">{% trans "Admin" %}</a>
+                            {% endif %}
+                            <a href="{% url 'ai:radar_dashboard' %}">{% trans "Radar" %}</a>
+                            <a href="{% url 'ai:studio' %}">{% trans "Studio" %}</a>
+                            <a href="{% url 'ai:atlas_rebuild' %}">{% trans "Atlas" %}</a>
+                        {% endif %}
+                        {% endif %}
+                        <a href="{% url 'cursos:lista_cursos' %}">{% trans "Cursos" %}</a>
+                        <a href="{% url 'forum:forum_index' %}">{% trans "Fórum" %}</a>
+                        <a href="{% url 'contato' %}">{% trans "Contato" %}</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'ai:mentor_home' %}">{% trans "Mentor IA" %}</a>
+                        {% endif %}
+                    </div>
+                    <div class="nav-links nav-links-buttons">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'accounts:logout' %}" class="button ghost nav-logout">{% trans "Sair" %}</a>
+                        {% else %}
+                        <div class="nav-guest">
+                            <a href="{% url 'accounts:login' %}" class="button ghost">{% trans "Entrar" %}</a>
+                            <a href="{% url 'accounts:cadastrar_usuario' %}" class="button primary">{% trans "Criar conta" %}</a>
+                        </div>
+                        {% endif %}
+                    </div>
                 </nav>
             </div>
         </header>
+
+        <div class="floating-controls" aria-label="Quick controls">
+            <button type="button" class="button light theme-toggle icon icon-only" id="theme-toggle"
+                data-label-light="{% trans 'Tema claro' %}" data-label-dark="{% trans 'Tema escuro' %}"
+                data-icon-light="fa-sun-o" data-icon-dark="fa-moon-o" aria-label="{% trans 'Tema escuro' %}"
+                title="{% trans 'Tema escuro' %}">
+                <i class="fa fa-moon-o" aria-hidden="true"></i>
+            </button>        
+            {% get_current_language as LANGUAGE_CODE %}
+            <form action="{% url 'set_language' %}" method="post" class="lang-switch" style="margin-bottom: 0;">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+                {% if LANGUAGE_CODE == 'pt-br' %}
+                <input type="hidden" name="language" value="en" />
+                <button type="submit" class="button light icon lang-button icon-only" title="English" aria-label="English">
+                    <img class="lang-flag" src="{% static 'img/flags/us-circle.svg' %}" alt="English" />
+                </button>
+                {% else %}
+                <input type="hidden" name="language" value="pt-br" />
+                <button type="submit" class="button light icon lang-button icon-only" title="Português" aria-label="Português">
+                    <img class="lang-flag" src="{% static 'img/flags/br-circle.svg' %}" alt="Português" />
+                </button>
+                {% endif %}
+            </form>
+        </div>
 
         {% if messages %}
         <div class="container">
@@ -137,22 +156,7 @@
                     <a href="{% url 'contato' %}">{% trans "Fale conosco" %}</a>
                 </div>
                 <div class="footer-note">
-                    <span>{% trans "Sistema auxiliar de gestÃ£o para cursos a distÃ¢ncia." %}</span>
-                    <form action="{% url 'set_language' %}" method="post" class="lang-switch footer">
-                        {% csrf_token %}
-                        <input name="next" type="hidden" value="{{ request.get_full_path }}" />
-                        {% if LANGUAGE_CODE == 'pt-br' %}
-                        <input type="hidden" name="language" value="en" />
-                        <button type="submit" class="button light icon lang-button icon-only" title="English" aria-label="English">
-                            <img class="lang-flag" src="{% static 'img/flags/us-circle.svg' %}" alt="English" />
-                        </button>
-                        {% else %}
-                        <input type="hidden" name="language" value="pt-br" />
-                        <button type="submit" class="button light icon lang-button icon-only" title="PortuguÃªs" aria-label="PortuguÃªs">
-                            <img class="lang-flag" src="{% static 'img/flags/br-circle.svg' %}" alt="PortuguÃªs" />
-                        </button>
-                        {% endif %}
-                    </form>
+                    <span>{% trans "Sistema auxiliar de gestão para cursos a distância." %}</span>
                 </div>
             </div>
         </footer>
@@ -166,6 +170,7 @@
 </body>
 
 </html>
+
 
 
 

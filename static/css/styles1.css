@@ -5,8 +5,9 @@
 }
 body {
     margin: 0 auto;
-    line-height: 1.7em;
-
+    min-width: 320px;
+    color: #777;
+    line-height: 1.6;
 }
 a {
     color: #3b8bba;
@@ -239,11 +240,7 @@ table.full {
 .button-secondary {
     background: rgb(66, 184, 221); /* this is a light blue */
 }
-body {
-    min-width: 320px;
-    color: #777;
-    line-height: 1.6;
-}
+
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;

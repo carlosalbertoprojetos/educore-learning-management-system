@@ -66,6 +66,15 @@ class AccountsViewsTests(TestCase):
         response = self.client.get(reverse("accounts:painel"))
         self.assertEqual(response.status_code, 302)
 
+
+    def test_logout_redireciona_para_home(self):
+        self.client.login(username="user", password="Senha@123")
+        response = self.client.get(reverse("accounts:logout"))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("home"))
+        # session should be cleared
+        self.assertNotIn("_auth_user_id", self.client.session)
+
     def test_editar_usuario_get(self):
         self.client.login(username="user", password="Senha@123")
         url = reverse("accounts:editar_usuario")

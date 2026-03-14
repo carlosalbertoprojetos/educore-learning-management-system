@@ -60,6 +60,54 @@ $( document ).ready(function() {
 
     
 
+
+    var navToggle = $('#nav-toggle');
+    var navLinks = $('#primary-nav');
+
+    function setNavOpen(isOpen) {
+        if (!navToggle.length || !navLinks.length) {
+            return;
+        }
+        navLinks.toggleClass('is-open', isOpen);
+        navToggle.attr('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
+    if (navToggle.length && navLinks.length) {
+        navToggle.on('click', function() {
+            setNavOpen(!navLinks.hasClass('is-open'));
+        });
+
+        navLinks.find('a').on('click', function() {
+            setNavOpen(false);
+        });
+
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape') {
+                setNavOpen(false);
+            }
+        });
+
+        $(document).on('click', function(e) {
+            if (!navLinks.hasClass('is-open')) {
+                return;
+            }
+            var $target = $(e.target);
+            if ($target.closest('#primary-nav').length) {
+                return;
+            }
+            if ($target.closest('#nav-toggle').length) {
+                return;
+            }
+            setNavOpen(false);
+        });
+
+        $(window).on('resize', function() {
+            if (window.innerWidth > 960) {
+                setNavOpen(false);
+            }
+        });
+    }
+
     function initCarousel($carousel) {
         var $slides = $carousel.find('.carousel-slide');
         if ($slides.length <= 1) {

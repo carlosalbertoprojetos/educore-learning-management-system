@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
     PasswordChangeForm, SetPasswordForm
@@ -8,6 +8,7 @@ from django.contrib.auth.forms import (
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.decorators.http import require_http_methods
 
 from .forms import CadastrarUsuarioForm, EditarUsuarioForm, ResetarSenhaForm
 from .models import ResetarSenha
@@ -102,3 +103,13 @@ def editar_senha(request):
         form = PasswordChangeForm(user=request.user)
     context['form'] = form
     return render(request, template_name, context)
+
+@require_http_methods(["GET", "POST"])
+def logout_view(request):
+    """Logout endpoint that works for both link GETs and form POSTs.
+
+    Django 6+ defaults LogoutView to POST-only; this keeps UX simple while redirecting home.
+    """
+    logout(request)
+    return redirect('home')
+

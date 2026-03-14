@@ -20,7 +20,7 @@ Plataforma de cursos online construída com Django, unindo catálogo de cursos, 
 ---
 
 **Visão geral**
-O EduCore (projeto `cursos_online`) organiza cursos, aulas e materiais, permite que usuários se inscrevam e interajam via anúncios e comentários, e oferece um fórum com tópicos e respostas. A autenticação usa um modelo de usuário customizado.
+O EduCore (projeto `core`) organiza cursos, aulas e materiais, permite que usuários se inscrevam e interajam via anúncios e comentários, e oferece um fórum com tópicos e respostas. A autenticação usa um modelo de usuário customizado.
 
 Rotas principais:
 - `/`: página inicial
@@ -121,7 +121,7 @@ A aplicação fica disponível em `http://127.0.0.1:8000`.
 ---
 
 **Variáveis de ambiente**
-Arquivo: `cursos_online/settings.py`
+Arquivo: `core/settings.py`
 - `DEBUG`: deixe `True` apenas em desenvolvimento
 - `ALLOWED_HOSTS`: configure para produção
 - `SECRET_KEY`: substitua em produção

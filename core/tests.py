@@ -27,3 +27,21 @@ class ContatoViewTest(TestCase):
         response = client.get(reverse("contato"))
         self.assertTemplateUsed(response, "contato.html")
         self.assertTemplateUsed(response, "base.html")
+
+
+from django.test import SimpleTestCase
+
+
+class StartupModulesTests(SimpleTestCase):
+    def test_asgi_imports(self):
+        import importlib
+
+        module = importlib.import_module('core.asgi')
+        self.assertTrue(hasattr(module, 'application'))
+
+    def test_wsgi_imports(self):
+        import importlib
+
+        module = importlib.import_module('core.wsgi')
+        self.assertTrue(hasattr(module, 'application'))
+
