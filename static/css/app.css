@@ -133,10 +133,6 @@ a:hover {
     width: min(100% - 32px, 720px);
 }
 
-.main {
-    padding: 32px 0 72px;
-}
-
 .section {
     padding: 32px 0;
 }
@@ -549,12 +545,13 @@ a:hover {
 }
 
 .hero-bullets li::before {
-    content: "â€¢";
+    content: "\2022";
     position: absolute;
     left: 0;
     color: var(--accent);
     font-weight: 700;
 }
+
 
 .hero-media {
     border-radius: var(--radius);
@@ -841,8 +838,14 @@ ul.errorlist {
     gap: 24px;
 }
 
+/* Forum list: keep vertical rhythm tighter than the default .stack spacing. */
+.forum-layout > .stack {
+    gap: 12px;
+}
+
 .thread-card {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -852,6 +855,134 @@ ul.errorlist {
     gap: 12px;
     color: var(--muted);
     font-size: 0.9rem;
+    line-height: 1.25;
+}
+
+.thread-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.thread-title {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
+.thread-title a {
+    color: inherit;
+}
+
+.thread-updated {
+    font-size: 0.78rem;
+    padding: 6px 10px;
+    white-space: nowrap;
+}
+
+.thread-stats {
+    font-size: 0.85rem;
+    gap: 10px;
+}
+
+.thread-stats i {
+    opacity: 0.72;
+    margin-right: 6px;
+}
+
+.thread-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    line-height: 1.15;
+}
+
+.thread-tags-icon {
+    color: var(--muted);
+    opacity: 0.75;
+    display: inline-flex;
+    align-items: center;
+}
+
+.thread-tags .tag {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+}
+
+@media (min-width: 768px) {
+    .forum-layout > .stack {
+        gap: 10px;
+    }
+
+    /* Desktop/tablet: keep forum cards dense even when content is short. */
+    .thread-card.card-compact {
+        padding: 10px;
+        gap: 5px;
+    }
+
+    .thread-top {
+        gap: 8px;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .thread-title {
+        font-size: 0.98rem;
+        line-height: 1.15;
+    }
+
+    /* Clamp long titles so cards don't grow tall on wide screens. */
+    .thread-title a {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .thread-updated {
+        font-size: 0.74rem;
+        padding: 3px 8px;
+    }
+
+    .thread-stats {
+        font-size: 0.8rem;
+        gap: 10px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .thread-stats::-webkit-scrollbar {
+        height: 0;
+    }
+
+    .thread-stats span {
+        white-space: nowrap;
+    }
+
+    .thread-tags {
+        gap: 6px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0;
+        line-height: 1.1;
+    }
+
+    .thread-tags::-webkit-scrollbar {
+        height: 0;
+    }
+
+    .thread-tags .tag {
+        font-size: 0.74rem;
+        padding: 3px 9px;
+        white-space: nowrap;
+    }
 }
 
 .reply-card {

@@ -61,6 +61,15 @@ python manage.py rebuild_atlas
 
 ---
 
+**Dados de demonstração (investidores)**
+Para preencher a plataforma com **12 cursos de TI**, imagens HD e interações realistas (fórum, anúncios, Mentor IA, Radar e Atlas), use:
+```bash
+python manage.py seed_investor_demo --purge --purge-media --students 22 --stock-images
+```
+O comando faz backup do `db.sqlite3` em `backup/` e limpa a base preservando os usuários existentes quando `--purge` é usado.
+
+---
+
 **Stack e dependências**
 - Python 3.8+ (compatível com Django 4.1.2)
 - Django 4.1.2

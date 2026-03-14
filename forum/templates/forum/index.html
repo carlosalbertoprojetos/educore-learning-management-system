@@ -33,25 +33,33 @@
                 </div>
             </aside>
 
-            <div class="stack">
-                {% for thread in object_list %}
-                <article class="card thread-card reveal">
-                    <h3><a href="{{ thread.get_absolute_url }}">{{ thread.display_title }}</a></h3>
-                    <div class="thread-meta">
-                        <span>{% trans "Criado por" %} {{ thread.author }}</span>
-                        <span>
+                <div class="stack">
+                    {% for thread in object_list %}
+                <article class="card card-compact thread-card reveal">
+                    <div class="thread-top">
+                        <h3 class="thread-title">
+                            <a href="{{ thread.get_absolute_url }}">{{ thread.display_title }}</a>
+                        </h3>
+                        <span class="pill thread-updated">
+                            {% blocktrans with time=thread.modified|timesince %}Atualizado há {{ time }}{% endblocktrans %}
+                        </span>
+                    </div>
+
+                    <div class="thread-meta thread-stats" aria-label="{% trans 'Estatísticas' %}">
+                        <span><i class="fa fa-user-o" aria-hidden="true"></i> {% trans "por" %} {{ thread.author }}</span>
+                        <span><i class="fa fa-comments-o" aria-hidden="true"></i>
                             {% blocktrans count total=thread.answers %}{{ total }} resposta{% plural %}{{ total }} respostas{% endblocktrans %}
                         </span>
-                        <span>
+                        <span><i class="fa fa-eye" aria-hidden="true"></i>
                             {% blocktrans count total=thread.views %}{{ total }} visualização{% plural %}{{ total }} visualizações{% endblocktrans %}
                         </span>
                     </div>
-                    <div class="thread-meta">
-                        <span><i class="fa fa-tags"></i></span>
+
+                    <div class="thread-tags" aria-label="{% trans 'Tags' %}">
+                        <span class="thread-tags-icon" aria-hidden="true"><i class="fa fa-tags"></i></span>
                         {% for tag in thread.tags.all %}
                         <a href="{% url 'forum:index_tagged' tag.slug %}" class="tag">{{ tag }}</a>
                         {% endfor %}
-                        <span class="pill">{% blocktrans with time=thread.modified|timesince %}Atualizado há {{ time }}{% endblocktrans %}</span>
                     </div>
                 </article>
                 {% empty %}
