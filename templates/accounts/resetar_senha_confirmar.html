@@ -8,7 +8,15 @@
             <span class="eyebrow">{% trans "Nova senha" %}</span>
             <h1>{% trans "Defina sua nova senha" %}</h1>
 
-            {% if success %}
+            {% if invalid_reset %}
+            <div class="alert error">
+                {{ invalid_reset_message }}
+            </div>
+            <div class="form-actions">
+                <a class="button primary" href="{% url 'accounts:resetar_senha' %}">{% trans "Solicitar novo link" %}</a>
+                <a class="button ghost" href="{% url 'accounts:login' %}">{% trans "Voltar ao login" %}</a>
+            </div>
+            {% elif success %}
             <div class="alert success">
                 {% trans "Sua senha foi criada com sucesso." %}
             </div>

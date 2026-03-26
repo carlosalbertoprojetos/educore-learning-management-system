@@ -1,18 +1,25 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model, logout
+from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
     PasswordChangeForm, SetPasswordForm
     )
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import Http404
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from django.views.decorators.http import require_http_methods
+from urllib.parse import unquote
 
 from .forms import CadastrarUsuarioForm, EditarUsuarioForm, ResetarSenhaForm
 from .models import ResetarSenha
 User = get_user_model()
+
+
+RESET_TOKEN_TTL_HOURS = 24
 
 
 class CadastrarUsuarioView(generic.CreateView):
@@ -32,14 +39,57 @@ def resetar_senha(request):
     return render(request, template_name, context)
 
 
+def _get_reset_by_key_or_legacy_prefix(raw_key):
+    key = unquote(raw_key or "").strip()
+    if not key:
+        raise Http404
+
+    reset = ResetarSenha.objects.filter(key=key).select_related("user").first()
+    if reset:
+        return reset
+
+    # Legacy links sometimes carried only a short prefix plus "=".
+    legacy_prefix = key.rstrip("=")
+    if legacy_prefix and len(legacy_prefix) < 56:
+        qs = ResetarSenha.objects.filter(key__startswith=legacy_prefix).select_related("user")
+        if qs.count() == 1:
+            return qs.first()
+
+    raise Http404
+
+
+def _is_reset_expired(reset):
+    age = timezone.now() - reset.created_at
+    return age.total_seconds() > RESET_TOKEN_TTL_HOURS * 3600
+
+
 def confirmar_resetar_senha(request, key):
     template_name = 'accounts/resetar_senha_confirmar.html'
-    context = {}
-    reset = get_object_or_404(ResetarSenha, key=key)
+    context = {"invalid_reset": False}
+    try:
+        reset = _get_reset_by_key_or_legacy_prefix(key)
+    except Http404:
+        context["invalid_reset"] = True
+        context["invalid_reset_message"] = _(
+            "Este link de redefinição é inválido, antigo ou já não está mais disponível."
+        )
+        return render(request, template_name, context, status=404)
+
+    if reset.confirmed or _is_reset_expired(reset):
+        context["invalid_reset"] = True
+        context["invalid_reset_message"] = _(
+            "Este link de redefinição expirou ou já foi utilizado."
+        )
+        return render(request, template_name, context, status=410)
+
     form = SetPasswordForm(user=reset.user, data=request.POST or None)
     if form.is_valid():
         form.save()
-        context['success'] = True
+        reset.confirmed = True
+        reset.save(update_fields=["confirmed"])
+        ResetarSenha.objects.filter(user=reset.user, confirmed=False).exclude(pk=reset.pk).delete()
+        login(request, reset.user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect(settings.LOGIN_REDIRECT_URL)
     context['form'] = form
     return render(request, template_name, context)
 

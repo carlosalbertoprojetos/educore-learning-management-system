@@ -1,7 +1,10 @@
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from accounts.forms import CadastrarUsuarioForm, ResetarSenhaForm
 from accounts.models import ResetarSenha
@@ -43,6 +46,22 @@ class AccountsFormTests(TestCase):
         form.save()
         self.assertEqual(ResetarSenha.objects.count(), 1)
         self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["user@example.com"])
+
+    def test_resetar_senha_form_substitui_token_antigo_aberto(self):
+        user = User.objects.create_user(
+            username="user2",
+            email="user2@example.com",
+            password="Senha@123",
+        )
+        ResetarSenha.objects.create(user=user, key="token-antigo", confirmed=False)
+
+        form = ResetarSenhaForm(data={"email": "user2@example.com"})
+        self.assertTrue(form.is_valid())
+        form.save()
+
+        self.assertEqual(ResetarSenha.objects.filter(user=user).count(), 1)
+        self.assertFalse(ResetarSenha.objects.filter(key="token-antigo").exists())
 
     def test_resetar_senha_form_email_inexistente(self):
         form = ResetarSenhaForm(data={"email": "invalido@example.com"})
@@ -121,10 +140,44 @@ class AccountsViewsTests(TestCase):
             "new_password1": "SenhaNova@123",
             "new_password2": "SenhaNova@123",
         })
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.context.get("success"))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("accounts:painel"))
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password("SenhaNova@123"))
+        reset.refresh_from_db()
+        self.assertTrue(reset.confirmed)
+        self.assertEqual(str(self.client.session.get("_auth_user_id")), str(self.user.pk))
+
+    def test_confirmar_resetar_senha_aceita_prefixo_legado_unico(self):
+        reset = ResetarSenha.objects.create(
+            user=self.user,
+            key="275cae605f3d106f8764cd2aa3a6b8df897fd46db130a906ee9b6993",
+        )
+        legacy_key = "275cae605f3d10="
+        url = reverse("accounts:confirmar_resetar_senha", args=[legacy_key])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Defina sua nova senha")
+        self.assertEqual(response.context["form"].user, reset.user)
+
+    def test_confirmar_resetar_senha_invalida_retorna_404_com_mensagem(self):
+        url = reverse("accounts:confirmar_resetar_senha", args=["token-inexistente"])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.context["invalid_reset"])
+        self.assertContains(response, "inválido", status_code=404)
+
+    def test_confirmar_resetar_senha_expirada_retorna_410(self):
+        reset = ResetarSenha.objects.create(user=self.user, key="token-expirado")
+        ResetarSenha.objects.filter(pk=reset.pk).update(created_at=timezone.now() - timedelta(hours=30))
+        url = reverse("accounts:confirmar_resetar_senha", args=[reset.key])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 410)
+        self.assertTrue(response.context["invalid_reset"])
+        self.assertContains(response, "expirou", status_code=410)
 
     def test_painel_view_logado(self):
         self.client.login(username="user", password="Senha@123")

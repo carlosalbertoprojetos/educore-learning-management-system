@@ -506,12 +506,14 @@ a:hover {
 }
 
 .lang-flag {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     display: block;
     object-fit: cover;
-}@media (max-width: 720px) {
+}
+
+@media (max-width: 720px) {
     .theme-toggle,
     .lang-button {
         width: 44px;

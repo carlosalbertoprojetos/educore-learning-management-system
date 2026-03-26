@@ -64,6 +64,8 @@ class ResetarSenhaForm(forms.Form):
         
     def save(self, commit=True):
         user = User.objects.get(email=self.cleaned_data['email'])
+        # Keep a single active reset token per user to avoid stale-link confusion.
+        ResetarSenha.objects.filter(user=user, confirmed=False).delete()
         key = generate_hash_key(user.username)
         reset = ResetarSenha(key=key, user=user)
         reset.save()
@@ -72,7 +74,7 @@ class ResetarSenhaForm(forms.Form):
         context = {
             'reset': reset,
         }
-        send_email_template(subject, template_name, context, ['user.email'])
+        send_email_template(subject, template_name, context, [user.email])
 
 
 # class CriarUsuariocomEmailForm(UserCreationForm):
